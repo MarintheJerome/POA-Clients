@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 public class VueClient extends Application{
 
-	String titre;
 	@FXML
 	Text ref, prixProduit, prixPanier;
 	@FXML
@@ -55,9 +54,9 @@ public class VueClient extends Application{
 		//TODO : Passer la commande au supermarché
 	}
 	
-	@FXML
-	public void initialize() throws Exception {
-		
+	private String getNomClient(){
+		//TODO : méthode de recherche du nom du client
+		return "Client 1";
 	}
 	
 	@Override
@@ -67,7 +66,7 @@ public class VueClient extends Application{
 		final Node node = fxmlLoader.load(); 
 		final BorderPane root = new BorderPane(node); 
 		final Scene scene = new Scene(root); 
-		primaryStage.setTitle("Test"); 
+		primaryStage.setTitle(getNomClient()); 
 		primaryStage.setScene(scene); 
 		primaryStage.show();
 		
