@@ -13,9 +13,7 @@ public class AgentClient extends Agent{
 
     protected void setup() {
         addBehaviour(new ReceiveBehaviour(this));
-
-        Object[] args = getArguments();
-        AID aid = new AID();
+        
         System.out.println("Hello. My name is " + this.getLocalName());
 
         // pour pas s'envoyer à lui même
