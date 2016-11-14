@@ -3,7 +3,6 @@ package castagnos.agent.client.agent;
 import castagnos.agent.client.behaviour.ReceiveBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
-import jade.core.behaviours.SimpleBehaviour;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.lang.acl.ACLMessage;
 
@@ -27,20 +26,6 @@ public class AgentClient extends Agent{
             msg.addReceiver(new AID("receiver", AID.ISLOCALNAME));
             msg.setContent("Salut, j'envoie un message");
             this.send(msg);
-        }
-    }
-
-    private void sendMessage(String mess, AID id) {
-        try {
-            ACLMessage aclMessage = new ACLMessage(ACLMessage.REQUEST);
-            aclMessage.addReceiver(id);
-
-            aclMessage.setContent(mess);
-
-            this.send(aclMessage);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 }
