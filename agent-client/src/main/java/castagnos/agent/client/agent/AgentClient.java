@@ -15,7 +15,6 @@ public class AgentClient extends Agent{
         addBehaviour(new ReceiveBehaviour(this));
 
         Object[] args = getArguments();
-        String message = (String) args[0];
         AID aid = new AID();
         System.out.println("Hello. My name is " + this.getLocalName());
 
