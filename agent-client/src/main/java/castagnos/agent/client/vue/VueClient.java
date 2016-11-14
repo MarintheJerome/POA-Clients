@@ -61,9 +61,8 @@ public class VueClient extends Application{
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		final URL fxmlURL = getClass().getResource("Client.fxml"); 
-		final FXMLLoader fxmlLoader = new FXMLLoader(fxmlURL); 
-		final Node node = fxmlLoader.load(); 
+		FXMLLoader preloader = new FXMLLoader(getClass().getClassLoader().getResource("Client.fxml"));
+		final Node node = preloader.load();
 		final BorderPane root = new BorderPane(node); 
 		final Scene scene = new Scene(root); 
 		primaryStage.setTitle(getNomClient()); 
