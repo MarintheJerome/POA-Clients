@@ -1,3 +1,0 @@
-[submodule "agent-client/agents-api"]
-	path = agent-client/agents-api
-	url = https://github.com/Nitix/agents-api.git
