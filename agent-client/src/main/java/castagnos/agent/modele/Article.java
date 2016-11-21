@@ -6,6 +6,7 @@ public class Article {
 	private String marque;
 	private String description;
 	private String categorie;
+	private double prix;
 	
 	public Article(String nom, String marque, String description, String categorie) {
 		super();
@@ -46,4 +47,14 @@ public class Article {
 	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
+
+	public double getPrix() {
+		return prix;
+	}
+
+	public void setPrix(double prix) {
+		this.prix = prix;
+	}
+	
+	
 }
