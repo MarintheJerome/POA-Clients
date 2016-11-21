@@ -4,7 +4,30 @@ import java.util.ArrayList;
 
 public class Commande {
 	
-	//Faire plutot une map ?
-	private ArrayList<Article> commandeProduits = new ArrayList<Article>();
+	private ArrayList<Article> commandeProduits;
 	
+	public Commande() {
+		this.commandeProduits = new ArrayList<Article>();
+	}
+
+	public Commande(ArrayList<Article> commandeProduits) {
+		super();
+		this.commandeProduits = commandeProduits;
+	}
+	
+	public void addArticle(Article anArticle) {
+		this.commandeProduits.add(anArticle);
+	}
+	
+	public void removeArticle(Article anArticle) {
+		this.commandeProduits.remove(anArticle);
+	}
+
+	public ArrayList<Article> getCommandeProduits() {
+		return commandeProduits;
+	}
+
+	public void setCommandeProduits(ArrayList<Article> commandeProduits) {
+		this.commandeProduits = commandeProduits;
+	}
 }
