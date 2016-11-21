@@ -1,6 +1,8 @@
 package castagnos.agent.client.vue;
 
+import java.io.File;
 import java.net.URL;
+
 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -14,6 +16,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+/**
+ * Created by arnaud on 10/11/2016.
+ */
 public class VueClient extends Application{
 
 	@FXML
@@ -27,8 +32,14 @@ public class VueClient extends Application{
 	
 	@FXML
 	public void rechercher(){
+<<<<<<< HEAD
 		//TODO : Faire une fenêtre de selection de l'article
 		Recherche msg;
+=======
+		String recherche = this.recherche.getText().toString();
+		
+
+>>>>>>> master
 	}
 	
 	@FXML
