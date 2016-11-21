@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -29,17 +30,14 @@ public class VueClient extends Application{
 	Button rechercher, ajouter, annuler, negocier, commander;
 	@FXML
 	ImageView image;
+	@FXML
+	Slider distance;
 	
 	@FXML
 	public void rechercher(){
-<<<<<<< HEAD
 		//TODO : Faire une fenêtre de selection de l'article
 		Recherche msg;
-=======
 		String recherche = this.recherche.getText().toString();
-		
-
->>>>>>> master
 	}
 	
 	@FXML
