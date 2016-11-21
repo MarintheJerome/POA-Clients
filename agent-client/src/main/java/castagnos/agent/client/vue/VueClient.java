@@ -3,7 +3,7 @@ package castagnos.agent.client.vue;
 import java.io.File;
 import java.net.URL;
 
-
+import fr.miage.agents.api.message.demande.Recherche;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,9 +32,7 @@ public class VueClient extends Application{
 	
 	@FXML
 	public void rechercher(){
-		String recherche = this.recherche.getText().toString();
-		
-
+		Recherche recherche = new Recherche();
 	}
 	
 	@FXML
