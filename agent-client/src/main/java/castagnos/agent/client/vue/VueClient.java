@@ -28,6 +28,7 @@ public class VueClient extends Application{
 	@FXML
 	public void rechercher(){
 		//TODO : Faire une fenêtre de selection de l'article
+		Recherche msg;
 	}
 	
 	@FXML
