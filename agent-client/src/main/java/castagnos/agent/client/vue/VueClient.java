@@ -25,7 +25,7 @@ public class VueClient extends Application{
 	@FXML
 	Text ref, prixProduit, prixPanier;
 	@FXML
-	TextField recherche, quantite, article;
+	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque;
 	@FXML
 	Button rechercher, ajouter, annuler, negocier, commander;
 	@FXML
@@ -48,7 +48,11 @@ public class VueClient extends Application{
 	public void annuler(){
 		this.recherche.clear();
 		this.quantite.clear();
-		this.article.clear();
+		this.reference.clear();
+		this.categorie.clear();
+		this.marque.clear();
+		this.prixMax.clear();
+		this.prixMin.clear();
 		this.ref.setText("");
 		this.prixProduit.setText("");
 	}
