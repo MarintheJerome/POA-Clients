@@ -1,10 +1,11 @@
 package castagnos.agent.client.vue;
 
-import java.io.File;
-import java.net.URL;
-
 import fr.miage.agents.api.message.demande.Recherche;
+import fr.miage.agents.api.message.reponse.ResultatCategorie;
+import fr.miage.agents.api.model.Categorie;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -23,7 +24,7 @@ import javafx.stage.Stage;
 public class VueClient extends Application{
 
 	@FXML
-	Text ref, prixProduit, prixPanier;
+	Text ref, prixProduit, prixPanier, kilometer;
 	@FXML
 	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque;
 	@FXML
@@ -36,8 +37,25 @@ public class VueClient extends Application{
 	@FXML
 	public void rechercher(){
 		Recherche recherche = new Recherche();
+		recherche.reference = this.reference.getText();
+		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
+		recherche.marque = this.marque.getText();
+		recherche.prixMax = Double.parseDouble(this.prixMax.getText());
+		recherche.prixMin = Double.parseDouble(this.prixMin.getText());
 		//TODO : Faire une fenêtre de selection de l'article
 	}
+	
+	private Categorie demandeCategorie(String nomCategorie){
+		//TODO: avoir la réponse contenant toutes les catégories pour remplacé le null
+		ResultatCategorie res = null;
+		for(Categorie c: res.categorieList){
+			if(c.getNomCategorie().equals(nomCategorie)){
+				return c;
+			}
+		}
+		return null;
+	}
+	
 	
 	@FXML
 	public void ajouter(){
@@ -53,7 +71,6 @@ public class VueClient extends Application{
 		this.marque.clear();
 		this.prixMax.clear();
 		this.prixMin.clear();
-		this.ref.setText("");
 		this.prixProduit.setText("");
 	}
 	
@@ -67,6 +84,17 @@ public class VueClient extends Application{
 		//TODO : Passer la commande au supermarché
 	}
 	
+	@FXML
+	public void setDistance(){
+		int km = (int) this.distance.getValue();
+		if(km>1){
+			this.kilometer.setText(km + " kms");
+		}
+		else{
+			this.kilometer.setText(km + " km");
+		}
+	}
+
 	private String getNomClient(){
 		//TODO : méthode de recherche du nom du client
 		return "Client 1";
