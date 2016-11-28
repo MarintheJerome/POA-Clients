@@ -1,7 +1,6 @@
 package castagnos.agent.client.agent;
 
 import jade.core.Agent;
-import jade.core.AID;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.proto.ContractNetResponder;
@@ -27,7 +26,7 @@ public class ResponderNetAgentExample extends Agent { //ContractNetResponder
                 MessageTemplate.MatchPerformative(ACLMessage.CFP) );
 
         addBehaviour(new ContractNetResponder(this, template) {
-            protected ACLMessage prepareResponse(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
+            protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
                 System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is "+cfp.getContent());
                 int proposal = evaluateAction();
                 if (proposal > 2) {
@@ -45,7 +44,7 @@ public class ResponderNetAgentExample extends Agent { //ContractNetResponder
                 }
             }
 
-            protected ACLMessage prepareResultNotification(ACLMessage cfp, ACLMessage propose,ACLMessage accept) throws FailureException {
+            protected ACLMessage handleAcceptProposal(ACLMessage cfp, ACLMessage propose,ACLMessage accept) throws FailureException {
                 System.out.println("Agent "+getLocalName()+": Proposal accepted");
                 if (performAction()) {
                     System.out.println("Agent "+getLocalName()+": Action successfully performed");
