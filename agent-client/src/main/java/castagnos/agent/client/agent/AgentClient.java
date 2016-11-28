@@ -1,6 +1,7 @@
 package castagnos.agent.client.agent;
 
 import castagnos.agent.client.behaviour.ReceiveBehaviour;
+import castagnos.agent.client.vue.VueClient;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -13,7 +14,7 @@ public class AgentClient extends Agent{
 
     protected void setup() {
         addBehaviour(new ReceiveBehaviour(this));
-        
+        VueClient.launcher(this);
         System.out.println("Hello. My name is " + this.getLocalName());
 
         // pour pas s'envoyer à lui même

@@ -1,5 +1,6 @@
 package castagnos.agent.client;
 
+import castagnos.agent.client.agent.AgentClient;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
@@ -17,14 +18,14 @@ public class mainTest {
         p.setParameter(Profile.MAIN_HOST, "localhost");
         p.setParameter(Profile.GUI, "true");
         ContainerController cc = runtime.createMainContainer(p);
-        AgentController receiver = null;
-        AgentController sender = null;
+        AgentController receiver;
+        AgentController sender;
         try {
             receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClient", null);
             receiver.start();
             sender = cc.createNewAgent("sender", "castagnos.agent.client.agent.AgentClient", null);
             sender.start();
-        } catch (StaleProxyException e1) {
+        } catch (Exception e1) {
             e1.printStackTrace();
         }
     }

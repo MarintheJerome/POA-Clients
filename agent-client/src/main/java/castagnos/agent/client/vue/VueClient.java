@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 
 
+import castagnos.agent.client.agent.AgentClient;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +30,8 @@ public class VueClient extends Application{
 	Button rechercher, ajouter, annuler, negocier, commander;
 	@FXML
 	ImageView image;
+
+	static AgentClient agent;
 	
 	@FXML
 	public void rechercher(){
@@ -75,10 +78,15 @@ public class VueClient extends Application{
 		primaryStage.setTitle(getNomClient()); 
 		primaryStage.setScene(scene); 
 		primaryStage.show();
-		
+
 	}
 
 	public static void main(String[] args) {
 		Application.launch(VueClient.class,args);
+	}
+
+	public static void launcher(AgentClient ac){
+		agent=ac;
+		Application.launch(VueClient.class,null);
 	}
 }
