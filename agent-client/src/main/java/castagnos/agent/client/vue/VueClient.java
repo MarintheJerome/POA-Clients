@@ -3,14 +3,15 @@ package castagnos.agent.client.vue;
 import java.io.File;
 import java.net.URL;
 
-
 import castagnos.agent.client.agent.AgentClient;
+import fr.miage.agents.api.message.demande.Recherche;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -25,19 +26,22 @@ public class VueClient extends Application{
 	@FXML
 	Text ref, prixProduit, prixPanier;
 	@FXML
-	TextField recherche, quantite, article;
+	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque;
 	@FXML
 	Button rechercher, ajouter, annuler, negocier, commander;
 	@FXML
 	ImageView image;
 
 	static AgentClient agent;
+
+	@FXML
+	Slider distance;
+
 	
 	@FXML
 	public void rechercher(){
-		String recherche = this.recherche.getText().toString();
-		
-
+		Recherche recherche = new Recherche();
+		//TODO : Faire une fenêtre de selection de l'article
 	}
 	
 	@FXML
@@ -49,7 +53,11 @@ public class VueClient extends Application{
 	public void annuler(){
 		this.recherche.clear();
 		this.quantite.clear();
-		this.article.clear();
+		this.reference.clear();
+		this.categorie.clear();
+		this.marque.clear();
+		this.prixMax.clear();
+		this.prixMin.clear();
 		this.ref.setText("");
 		this.prixProduit.setText("");
 	}
