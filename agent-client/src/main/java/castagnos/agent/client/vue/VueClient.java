@@ -1,5 +1,7 @@
 package castagnos.agent.client.vue;
 
+import java.io.IOException;
+
 import castagnos.agent.client.agent.AgentClient;
 
 import fr.miage.agents.api.message.demande.Recherche;
@@ -10,14 +12,21 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * Created by arnaud on 10/11/2016.
@@ -27,17 +36,22 @@ public class VueClient extends Application {
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
 	@FXML
-	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque;
+	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque, quantiteNegociation;
 	@FXML
-	Button rechercher, ajouter, annuler, negocier, commander;
+	Button rechercher, ajouter, annuler, negocier, commander, demander;
 	@FXML
 	ImageView image;
+	@FXML
+	RadioButton radioSimple, radioReponse, radioReponseNegative;
+	@FXML
+	ComboBox listProduit, listClient;
 
 	AgentClient agent;
 
 	@FXML
 	Slider distance;
 
+	Stage stage;
 	
 	@FXML
 	public void rechercher(){
@@ -80,8 +94,26 @@ public class VueClient extends Application {
 	}
 	
 	@FXML
-	public void negocier(){
-		//TODO : Faire une fenêtre de négociation avec une autre client
+	public void negocier() throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Negociation.fxml"));
+	    AnchorPane page = (AnchorPane) loader.load();
+	    Stage dialogStage = new Stage();
+	    setStage(dialogStage);
+	    dialogStage.setTitle("Simple Demande");
+	    dialogStage.initModality(Modality.WINDOW_MODAL);
+	    Scene scene = new Scene(page);
+	    dialogStage.setScene(scene);
+	    dialogStage.show();
+	}
+	
+	private void setStage(Stage stage){
+		this.stage = stage;
+	}
+	
+	@FXML
+	public void demander(){
+		Stage stage = (Stage) this.demander.getScene().getWindow();
+		stage.close();
 	}
 	
 	@FXML
@@ -107,6 +139,7 @@ public class VueClient extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
 		FXMLLoader preloader = new FXMLLoader(getClass().getClassLoader().getResource("Client.fxml"));
 		final Node node = preloader.load();
 		final BorderPane root = new BorderPane(node); 
@@ -114,6 +147,7 @@ public class VueClient extends Application {
 		primaryStage.setTitle(getNomClient()); 
 		primaryStage.setScene(scene); 
 		primaryStage.show();
+		this.stage = primaryStage;
 
 	}
 
