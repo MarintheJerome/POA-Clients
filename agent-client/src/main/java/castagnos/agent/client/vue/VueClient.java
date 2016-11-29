@@ -1,17 +1,12 @@
 package castagnos.agent.client.vue;
 
 import castagnos.agent.client.agent.AgentClient;
->>>>>>> master
+
 import fr.miage.agents.api.message.demande.Recherche;
 import fr.miage.agents.api.message.reponse.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
-import javafx.application.Application;
-<<<<<<< HEAD
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-=======
 
->>>>>>> master
+import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -59,7 +54,7 @@ public class VueClient extends Application {
 		//TODO: avoir la réponse contenant toutes les catégories pour remplacé le null
 		ResultatCategorie res = null;
 		for(Categorie c: res.categorieList){
-			if(c.getNomCategorie().equals(nomCategorie)){
+			if(c.nomCategorie.equals(nomCategorie)){
 				return c;
 			}
 		}
