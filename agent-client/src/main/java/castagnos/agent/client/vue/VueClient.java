@@ -1,11 +1,17 @@
 package castagnos.agent.client.vue;
 
+import castagnos.agent.client.agent.AgentClient;
+>>>>>>> master
 import fr.miage.agents.api.message.demande.Recherche;
 import fr.miage.agents.api.message.reponse.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
 import javafx.application.Application;
+<<<<<<< HEAD
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+=======
+
+>>>>>>> master
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -21,7 +27,7 @@ import javafx.stage.Stage;
 /**
  * Created by arnaud on 10/11/2016.
  */
-public class VueClient extends Application{
+public class VueClient extends Application {
 
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
@@ -31,8 +37,12 @@ public class VueClient extends Application{
 	Button rechercher, ajouter, annuler, negocier, commander;
 	@FXML
 	ImageView image;
+
+	AgentClient agent;
+
 	@FXML
 	Slider distance;
+
 	
 	@FXML
 	public void rechercher(){
@@ -97,9 +107,9 @@ public class VueClient extends Application{
 
 	private String getNomClient(){
 		//TODO : méthode de recherche du nom du client
-		return "Client 1";
+		return "Client";
 	}
-	
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FXMLLoader preloader = new FXMLLoader(getClass().getClassLoader().getResource("Client.fxml"));
@@ -109,10 +119,11 @@ public class VueClient extends Application{
 		primaryStage.setTitle(getNomClient()); 
 		primaryStage.setScene(scene); 
 		primaryStage.show();
-		
+
 	}
 
-	public static void main(String[] args) {
-		Application.launch(VueClient.class,args);
+	public void launcher(AgentClient ac){
+		agent = ac;
+		launch();
 	}
 }
