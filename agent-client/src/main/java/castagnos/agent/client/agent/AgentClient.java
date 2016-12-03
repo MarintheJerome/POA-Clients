@@ -16,7 +16,7 @@ public class AgentClient extends Agent {
         addBehaviour(new ReceiveBehaviour(this));
         try {
             if(this.getLocalName().equals("receiver")){
-               new VueClient().launcher(this);
+            //   new VueClient().launcher(this);
            }
         } catch (Exception e) {
             e.printStackTrace();

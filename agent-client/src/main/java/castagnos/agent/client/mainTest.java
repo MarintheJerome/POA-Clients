@@ -18,11 +18,17 @@ public class mainTest {
         ContainerController cc =runtime.createMainContainer(p);
         AgentController receiver;
         AgentController sender;
+        AgentController printer;
         try {
-            receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClient", null);
+            Object valeurs[] = {"receiver"};
+            receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClientFinal", valeurs);
             receiver.start();
-            sender = cc.createNewAgent("sender", "castagnos.agent.client.agent.AgentClient", null);
+            Object valeurs2[] = {"sender"};
+            sender = cc.createNewAgent("sender", "castagnos.agent.client.agent.AgentClientFinal", valeurs2);
             sender.start();
+            Object valeurs3[] = {"printer"};
+            printer = cc.createNewAgent("printer", "castagnos.agent.client.agent.AgentClientFinal", valeurs3);
+            printer.start();
         } catch (Exception e1) {
             e1.printStackTrace();
         }
