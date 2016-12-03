@@ -3,7 +3,6 @@ package castagnos.agent.client.vue;
 import java.io.IOException;
 
 import castagnos.agent.client.agent.AgentClient;
-
 import fr.miage.agents.api.message.demande.Recherche;
 import fr.miage.agents.api.message.reponse.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
@@ -12,7 +11,6 @@ import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -24,9 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 
 /**
  * Created by arnaud on 10/11/2016.

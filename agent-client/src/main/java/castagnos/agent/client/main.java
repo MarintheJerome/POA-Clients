@@ -9,7 +9,7 @@ import jade.wrapper.ContainerController;
 /**
  * Created by jerome on 14/11/2016.
  */
-public class mainTest {
+public class main {
     public static void main(String[] args){
         jade.core.Runtime runtime = jade.core.Runtime.instance();
         ProfileImpl p =new ProfileImpl();
@@ -21,13 +21,13 @@ public class mainTest {
         AgentController printer;
         try {
             Object valeurs[] = {"receiver"};
-            receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClientFinal", valeurs);
+            receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClient", valeurs);
             receiver.start();
             Object valeurs2[] = {"sender"};
-            sender = cc.createNewAgent("sender", "castagnos.agent.client.agent.AgentClientFinal", valeurs2);
+            sender = cc.createNewAgent("sender", "castagnos.agent.client.agent.AgentClient", valeurs2);
             sender.start();
             Object valeurs3[] = {"printer"};
-            printer = cc.createNewAgent("printer", "castagnos.agent.client.agent.AgentClientFinal", valeurs3);
+            printer = cc.createNewAgent("printer", "castagnos.agent.client.agent.AgentClient", valeurs3);
             printer.start();
         } catch (Exception e1) {
             e1.printStackTrace();
