@@ -1,5 +1,7 @@
 package castagnos.agent.client.agent;
 
+import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
+import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -43,7 +45,7 @@ public class AgentClientFinal extends Agent {
      */
     private final String TYPEC = "Client";
     private final String TYPEM = "Supermarché";
-    private String SELF = "Supermarché";
+    private String SELF = "";
 
     protected void setup() {
         // Ajout dans le registre
@@ -54,32 +56,18 @@ public class AgentClientFinal extends Agent {
         registerService(SELF);
         System.out.println("Hello my name is "+SELF);
 
-        if(SELF.equals("sender")) sending("Hello my friends !");
+        if(SELF.equals("sender")){
+            sending("Hello my friends !");
+        }
 
-        addBehaviour(new ContractNetInitiator(this, message) {
-            protected void handlePropose(ACLMessage propose, Vector v) {
-                System.out.println("Agent "+propose.getSender().getName()+" proposed "+propose.getContent());
-            }
-            //TODO
-            // Voir model
-        });
+        // Ajouts des comportements de l'agent
+        addBehaviour(new ContractNetInitiatorBehavior(this, message));
 
         MessageTemplate template = MessageTemplate.and(
                 MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
                 MessageTemplate.MatchPerformative(ACLMessage.CFP) );
 
-        addBehaviour(new ContractNetResponder(this, template) {
-            protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
-                System.out.println("Agent "+getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action is "+cfp.getContent());
-                ACLMessage propose = cfp.createReply();
-                propose.setPerformative(ACLMessage.PROPOSE);
-                propose.setContent("Hi !");
-                return propose;
-            }
-
-            //TODO
-            // Voir model
-        });
+        addBehaviour(new ContractNetResponderBehaviour(this, template));
     }
 
 
@@ -107,7 +95,7 @@ public class AgentClientFinal extends Agent {
                 }
             }
             if(!info.equals("")){
-                System.out.println(SELF+" has found "+type+" :");
+                System.out.print(SELF+" has found "+type+" : ");
                 System.out.println(info);
             }
         } catch (FIPAException e) {
