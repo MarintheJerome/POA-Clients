@@ -141,7 +141,7 @@
                         </Text>
                      </children>
                   </GridPane>
-                  <Slider fx:id="distance" min="1.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
+                  <Slider fx:id="distance" min="1.0" onValueChange="#setDistance" value="1.0" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text=" 1" GridPane.columnIndex="1" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="100 " GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="TOP" />
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Distance : " GridPane.halignment="RIGHT" GridPane.rowIndex="3">
@@ -149,7 +149,7 @@
                         <Font name="Arial" size="18.0" />
                      </font>
                   </Text>
-                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1 km" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+                  <Text fx:id="kilometer" strokeType="OUTSIDE" strokeWidth="0.0" text="1 km" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                      <font>
                         <Font name="Arial" size="18.0" />
                      </font>
