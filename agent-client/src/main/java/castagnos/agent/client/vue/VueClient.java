@@ -35,7 +35,7 @@ import javafx.stage.Stage;
 /**
  * Created by arnaud on 10/11/2016.
  */
-public class VueClient extends Application implements Initializable{
+public class VueClient extends Application{
 
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
@@ -56,26 +56,6 @@ public class VueClient extends Application implements Initializable{
 	Slider distance;
 
 	Stage stage;
-
-	// Méthode qui est appelée à la création de la vue
-	public void initialize(URL location, ResourceBundle resources) {
-		jade.core.Runtime runtime = jade.core.Runtime.instance();
-		ProfileImpl p =new ProfileImpl();
-		p.setParameter(Profile.MAIN_HOST, "localhost");
-		p.setParameter(Profile.GUI, "true");
-		ContainerController cc =runtime.createMainContainer(p);
-		AgentController receiver;
-		AgentController sender;
-		AgentController printer;
-
-		Object valeurs[] = {"receiver"};
-		try {
-			receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClient", valeurs);
-			receiver.start();
-		} catch (StaleProxyException e) {
-			e.printStackTrace();
-		}
-	}
 
 	@FXML
 	public void rechercher(){
