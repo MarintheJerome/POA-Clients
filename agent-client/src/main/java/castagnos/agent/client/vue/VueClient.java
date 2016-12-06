@@ -1,15 +1,23 @@
 package castagnos.agent.client.vue;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import castagnos.agent.client.agent.AgentClient;
 import fr.miage.agents.api.message.demande.Recherche;
 import fr.miage.agents.api.message.reponse.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
 
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
+import jade.wrapper.StaleProxyException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,7 +35,7 @@ import javafx.stage.Stage;
 /**
  * Created by arnaud on 10/11/2016.
  */
-public class VueClient extends Application {
+public class VueClient extends Application implements Initializable{
 
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
@@ -42,13 +50,33 @@ public class VueClient extends Application {
 	@FXML
 	ComboBox listProduit, listClient;
 
-	AgentClient agent;
+	private AgentClient agent;
 
 	@FXML
 	Slider distance;
 
 	Stage stage;
-	
+
+	// Méthode qui est appelée à la création de la vue
+	public void initialize(URL location, ResourceBundle resources) {
+		jade.core.Runtime runtime = jade.core.Runtime.instance();
+		ProfileImpl p =new ProfileImpl();
+		p.setParameter(Profile.MAIN_HOST, "localhost");
+		p.setParameter(Profile.GUI, "true");
+		ContainerController cc =runtime.createMainContainer(p);
+		AgentController receiver;
+		AgentController sender;
+		AgentController printer;
+
+		Object valeurs[] = {"receiver"};
+		try {
+			receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClient", valeurs);
+			receiver.start();
+		} catch (StaleProxyException e) {
+			e.printStackTrace();
+		}
+	}
+
 	@FXML
 	public void rechercher(){
 		Recherche recherche = new Recherche();
