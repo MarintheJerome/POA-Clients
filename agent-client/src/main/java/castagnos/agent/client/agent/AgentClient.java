@@ -32,6 +32,7 @@ public class AgentClient extends Agent {
      * Autre clients dans le réseau d'agent
      */
     private ArrayList<String> others = new ArrayList<String>();
+
     /**
      * Supermarché que l'on peut voir sur le réseau d'agent
      */
@@ -44,8 +45,8 @@ public class AgentClient extends Agent {
      */
     private ACLMessage message;
 
-    /*
-        Quelques attributs utiles.
+    /**
+     * Quelques attributs utiles.
      */
     private final String TYPEC = "Client";
     private final String TYPEM = "Supermarché";
@@ -153,4 +154,7 @@ public class AgentClient extends Agent {
         message.setContentObject(content);
     }
 
+    public String getAgentName(){
+        return SELF;
+    }
 }

@@ -158,8 +158,7 @@ public class VueClient extends Application{
 	}
 
 	private String getNomClient(){
-		//TODO : méthode de recherche du nom du client
-		return "Client";
+		return agent.getAgentName();
 	}
 
 	@Override
