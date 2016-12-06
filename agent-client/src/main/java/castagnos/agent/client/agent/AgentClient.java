@@ -162,7 +162,6 @@ public class AgentClient extends Agent {
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
         message.setContentObject(content);
-        message.
     }
 
     public String getAgentName(){
