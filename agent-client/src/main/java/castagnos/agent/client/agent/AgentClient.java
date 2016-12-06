@@ -69,11 +69,6 @@ public class AgentClient extends Agent {
             }
         }
 
-        //Ouverture du client Main
-        if(SELF.equals("MainClient")){
-            VueClient.launchMain(this);
-        }
-
         // Ajouts des comportements de l'agent
         addBehaviour(new ContractNetInitiatorBehavior(this, message));
 
@@ -82,6 +77,11 @@ public class AgentClient extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.CFP) );
 
         addBehaviour(new ContractNetResponderBehaviour(this, template));
+
+        //Ouverture du client Main
+        if(SELF.equals("MainClient")){
+            VueClient.launchMain(this);
+        }
     }
 
 
