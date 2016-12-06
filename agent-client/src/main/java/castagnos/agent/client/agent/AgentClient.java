@@ -2,24 +2,20 @@ package castagnos.agent.client.agent;
 
 import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
 import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
+import fr.miage.agents.api.message.Message;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.proto.ContractNetInitiator;
-import jade.proto.ContractNetResponder;
 import jade.util.leap.Iterator;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
 
 /**
  * Created by Yhugo on 01/12/2016.
@@ -57,7 +53,7 @@ public class AgentClient extends Agent {
         System.out.println("Hello my name is "+SELF);
 
         if(SELF.equals("sender")){
-            sending("Hello my friends !");
+            sending(null);
         }
 
         // Ajouts des comportements de l'agent
@@ -124,7 +120,7 @@ public class AgentClient extends Agent {
     /**
      * Méthode d'envoie de message.
      */
-    private void sending(String content){
+    private void sending(Message content){
         // MAJ des agents détéctés.
         others = getOthers(TYPEC);
         markets = getOthers(TYPEM);
@@ -134,6 +130,10 @@ public class AgentClient extends Agent {
         }
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-        message.setContent(content);
+        try {
+            message.setContentObject(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
