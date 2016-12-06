@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.client.controller.NegociationController;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
@@ -101,6 +102,10 @@ public class VueClient extends Application{
 	public void negocier() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Negociation.fxml"));
 	    AnchorPane page = (AnchorPane) loader.load();
+
+		NegociationController controller = loader.getController();
+		controller.setAgent(agent);
+
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Simple Demande");
