@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import castagnos.agent.client.agent.AgentClient;
 import castagnos.agent.modele.CellStyle;
+import castagnos.agent.client.controller.NegociationController;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
@@ -105,13 +106,17 @@ public class VueClient extends Application{
 	@FXML
 	public void negocier() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Negociation.fxml"));
-	    AnchorPane page = (AnchorPane) loader.load();
+
+	    AnchorPane page = loader.load();
+		NegociationController controller = loader.getController();
+
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Simple Demande");
 	    dialogStage.initModality(Modality.WINDOW_MODAL);
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
+		controller.loadRessource(agent);
 	    dialogStage.show();
 	}
 	
@@ -167,7 +172,6 @@ public class VueClient extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
 		FXMLLoader preloader = new FXMLLoader(getClass().getClassLoader().getResource("Client.fxml"));
 		final Node node = preloader.load();
 		final BorderPane root = new BorderPane(node); 
@@ -176,7 +180,6 @@ public class VueClient extends Application{
 		primaryStage.setScene(scene); 
 		primaryStage.show();
 		this.stage = primaryStage;
-
 	}
 
 	public static void launchMain(AgentClient ac){

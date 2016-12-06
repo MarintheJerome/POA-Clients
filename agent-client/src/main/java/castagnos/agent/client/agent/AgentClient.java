@@ -89,7 +89,7 @@ public class AgentClient extends Agent {
     /**
      * Méthode de retour des agents
      */
-    private ArrayList<String> getOthers(String type) {
+    public ArrayList<String> getOthers(String type) {
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType(type);
@@ -152,6 +152,17 @@ public class AgentClient extends Agent {
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
         message.setContentObject(content);
+    }
+
+    public void sending(Serializable content, String receiver) throws IOException {
+        // MAJ des agents détéctés.
+        markets = getOthers(TYPEM);
+        message = new ACLMessage(ACLMessage.CFP);
+        message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
+        message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+        message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
+        message.setContentObject(content);
+        message.
     }
 
     public String getAgentName(){
