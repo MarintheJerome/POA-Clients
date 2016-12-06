@@ -58,9 +58,9 @@ public class NegociationController implements Initializable{
 
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    quantiteNegociation.setText(newValue.replaceAll("[^\\d]", ""));
-                }
+            if (!newValue.matches("\\d*")) {
+                quantiteNegociation.setText(newValue.replaceAll("[^\\d]", ""));
+            }
             }
         });
     }

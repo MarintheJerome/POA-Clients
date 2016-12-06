@@ -61,14 +61,14 @@ public class AgentClient extends Agent {
         registerService(SELF);
         System.out.println("Hello my name is "+SELF);
 
-        // Test
+       /** // Test
         if(SELF.equals("sender")){
             try {
                 sending("Hello my friends !");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         // Ajouts des comportements de l'agent
         addBehaviour(new ContractNetInitiatorBehavior(this, message));
@@ -152,6 +152,7 @@ public class AgentClient extends Agent {
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
         message.setContentObject(content);
+        send(message);
     }
 
     public void sending(Serializable content, String receiver) throws IOException {
@@ -162,6 +163,7 @@ public class AgentClient extends Agent {
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
         message.setContentObject(content);
+        send(message);
     }
 
     public String getAgentName(){
