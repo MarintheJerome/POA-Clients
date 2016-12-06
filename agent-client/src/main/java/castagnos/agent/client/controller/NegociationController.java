@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 
 import java.awt.event.ActionEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -36,12 +37,16 @@ public class NegociationController implements Initializable{
     private Button demander;
 
     @FXML
-    private ComboBox<?> listeClient;
+    private ComboBox<String> listeClient;
 
     private AgentClient agentClient;
 
     public void initialize(URL location, ResourceBundle resources) {
-
+       // On récupère la liste des autres agents clients présents
+       ArrayList<String> listAgents = agentClient.getOthers("Client");
+       for(String nomAgent : listAgents){
+           listeClient.getItems().add(nomAgent);
+       }
     }
 
     @FXML

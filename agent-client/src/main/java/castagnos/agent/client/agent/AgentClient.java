@@ -89,7 +89,7 @@ public class AgentClient extends Agent {
     /**
      * Méthode de retour des agents
      */
-    private ArrayList<String> getOthers(String type) {
+    public ArrayList<String> getOthers(String type) {
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType(type);

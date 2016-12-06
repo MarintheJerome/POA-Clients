@@ -101,8 +101,8 @@ public class VueClient extends Application{
 	@FXML
 	public void negocier() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Negociation.fxml"));
-	    AnchorPane page = (AnchorPane) loader.load();
 
+	    AnchorPane page = (AnchorPane) loader.load();
 		NegociationController controller = loader.getController();
 		controller.setAgent(agent);
 
