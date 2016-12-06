@@ -44,7 +44,7 @@ public class VueClient extends Application{
 	@FXML
 	RadioButton radioSimple, radioReponse, radioReponseNegative;
 	@FXML
-	ComboBox listProduit, listClient;
+	ComboBox listProduits, listClient;
 
 	private static AgentClient agent;
 

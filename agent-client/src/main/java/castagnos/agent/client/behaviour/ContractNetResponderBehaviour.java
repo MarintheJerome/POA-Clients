@@ -1,5 +1,6 @@
 package castagnos.agent.client.behaviour;
 
+import castagnos.agent.client.agent.AgentClient;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
@@ -13,8 +14,11 @@ import jade.proto.ContractNetResponder;
  */
 public class ContractNetResponderBehaviour extends ContractNetResponder{
 
+    private AgentClient agentClient;
+
     public ContractNetResponderBehaviour(Agent a, MessageTemplate mt) {
         super(a, mt);
+        this.agentClient = (AgentClient) a;
     }
 
     protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
