@@ -139,7 +139,7 @@ public class AgentClient extends Agent {
      * Méthode d'envoie de message.
      */
 
-    private void sending(Serializable content) throws IOException {
+    public void sending(Serializable content) throws IOException {
 
         // MAJ des agents détéctés.
         others = getOthers(TYPEC);

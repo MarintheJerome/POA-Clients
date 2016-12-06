@@ -1,27 +1,21 @@
 package castagnos.agent.client.vue;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
 
 import castagnos.agent.client.agent.AgentClient;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
-
-import jade.core.Profile;
-import jade.core.ProfileImpl;
-import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
-import jade.wrapper.StaleProxyException;
+import fr.miage.agents.api.model.Produit;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -38,11 +32,13 @@ import javafx.stage.Stage;
 public class VueClient extends Application{
 
 	@FXML
+	ListView listeProduit;
+	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
 	@FXML
 	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque, quantiteNegociation;
 	@FXML
-	Button rechercher, ajouter, annuler, negocier, commander, demander;
+	Button rechercher, ajouter, annuler, negocier, commander, demander, quit;
 	@FXML
 	ImageView image;
 	@FXML
@@ -65,7 +61,11 @@ public class VueClient extends Application{
 		recherche.marque = this.marque.getText();
 		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
 		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
-		//TODO : Faire une fenêtre de selection de l'article
+		try {
+			this.agent.sending(recherche);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private Categorie demandeCategorie(String nomCategorie){
@@ -111,7 +111,17 @@ public class VueClient extends Application{
 	}
 	
 	@FXML
-	public void voirPanier(){
+	public void voirPanier() throws IOException{
+		ArrayList<Produit> panier = agent.panier;
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
+		BorderPane page = (BorderPane) loader.load();
+	    Stage dialogStage = new Stage();
+	    setStage(dialogStage);
+	    dialogStage.setTitle("Panier");
+	    dialogStage.initModality(Modality.WINDOW_MODAL);
+	    Scene scene = new Scene(page);
+	    dialogStage.setScene(scene);
+	    dialogStage.show();
 		
 	}
 	
@@ -122,6 +132,12 @@ public class VueClient extends Application{
 	@FXML
 	public void demander(){
 		Stage stage = (Stage) this.demander.getScene().getWindow();
+		stage.close();
+	}
+	
+	@FXML
+	public void quit(){
+		Stage stage = (Stage) this.quit.getScene().getWindow();
 		stage.close();
 	}
 	
