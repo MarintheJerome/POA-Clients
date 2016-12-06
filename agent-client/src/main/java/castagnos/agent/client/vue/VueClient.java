@@ -3,8 +3,8 @@ package castagnos.agent.client.vue;
 import java.io.IOException;
 
 import castagnos.agent.client.agent.AgentClient;
-import fr.miage.agents.api.message.demande.Recherche;
-import fr.miage.agents.api.message.reponse.ResultatCategorie;
+import fr.miage.agents.api.message.recherche.Rechercher;
+import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
 
 import javafx.application.Application;
@@ -51,12 +51,12 @@ public class VueClient extends Application {
 	
 	@FXML
 	public void rechercher(){
-		Recherche recherche = new Recherche();
-		recherche.reference = this.reference.getText();
+		Rechercher recherche = new Rechercher();
+		recherche.idProduit = Long.parseLong(this.reference.getText());
 		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
 		recherche.marque = this.marque.getText();
-		recherche.prixMax = Double.parseDouble(this.prixMax.getText());
-		recherche.prixMin = Double.parseDouble(this.prixMin.getText());
+		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
+		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
 		//TODO : Faire une fenêtre de selection de l'article
 	}
 	
@@ -100,6 +100,11 @@ public class VueClient extends Application {
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
 	    dialogStage.show();
+	}
+	
+	@FXML
+	public void voirPanier(){
+		
 	}
 	
 	private void setStage(Stage stage){
