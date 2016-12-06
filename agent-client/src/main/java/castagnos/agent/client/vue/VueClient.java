@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import castagnos.agent.client.agent.AgentClient;
 import castagnos.agent.modele.CellStyle;
 import castagnos.agent.client.controller.NegociationController;
+import castagnos.agent.client.controller.PanierController;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
@@ -38,13 +39,11 @@ import javafx.util.Callback;
 public class VueClient extends Application{
 
 	@FXML
-	ListView<Produit> listeProduits;
-	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
 	@FXML
 	TextField recherche, quantite, reference, prixMax, prixMin, categorie, marque, quantiteNegociation;
 	@FXML
-	Button rechercher, ajouter, annuler, negocier, commander, demander, quit;
+	Button rechercher, ajouter, annuler, negocier, commander, demander;
 	@FXML
 	ImageView image;
 	@FXML
@@ -124,12 +123,16 @@ public class VueClient extends Application{
 	public void voirPanier() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
 		BorderPane page = (BorderPane) loader.load();
+		PanierController controller = loader.getController();
+		
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Panier");
 	    dialogStage.initModality(Modality.WINDOW_MODAL); 
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
+	    System.out.println(controller);
+	    controller.loadAgent(agent);
 	    dialogStage.show();
 	}
 	
@@ -140,13 +143,6 @@ public class VueClient extends Application{
 	@FXML
 	public void demander(){
 		Stage stage = (Stage) this.demander.getScene().getWindow();
-		stage.close();
-	}
-	
-	@FXML
-	public void quit(){
-		
-		Stage stage = (Stage) this.quit.getScene().getWindow();
 		stage.close();
 	}
 	
