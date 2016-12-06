@@ -2,25 +2,29 @@ package castagnos.agent.client.agent;
 
 import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
 import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
+<<<<<<< HEAD
 import fr.miage.agents.api.model.Produit;
+=======
+import castagnos.agent.client.vue.VueClient;
+import fr.miage.agents.api.message.Message;
+>>>>>>> master
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.NotUnderstoodException;
-import jade.domain.FIPAAgentManagement.RefuseException;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
-import jade.proto.ContractNetInitiator;
-import jade.proto.ContractNetResponder;
 import jade.util.leap.Iterator;
+
+import java.io.IOException;
+import java.io.IOException;
+import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Vector;
 
 /**
  * Created by Yhugo on 01/12/2016.
@@ -59,8 +63,18 @@ public class AgentClient extends Agent {
         registerService(SELF);
         System.out.println("Hello my name is "+SELF);
 
+        // Test
         if(SELF.equals("sender")){
-            sending("Hello my friends !");
+            try {
+                sending("Hello my friends !");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        //Ouverture du client Main
+        if(SELF.equals("MainClient")){
+            launcherMainClient(this);
         }
 
         // Ajouts des comportements de l'agent
@@ -127,7 +141,9 @@ public class AgentClient extends Agent {
     /**
      * Méthode d'envoie de message.
      */
-    private void sending(String content){
+
+    private void sending(Serializable content) throws IOException {
+
         // MAJ des agents détéctés.
         others = getOthers(TYPEC);
         markets = getOthers(TYPEM);
@@ -137,6 +153,10 @@ public class AgentClient extends Agent {
         }
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-        message.setContent(content);
+        message.setContentObject(content);
+    }
+
+    private static void launcherMainClient(AgentClient a){
+        VueClient.launchMain(a);
     }
 }
