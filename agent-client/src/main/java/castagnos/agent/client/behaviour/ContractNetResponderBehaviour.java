@@ -1,6 +1,7 @@
 package castagnos.agent.client.behaviour;
 
 import castagnos.agent.client.agent.AgentClient;
+import fr.miage.agents.api.message.Message;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
 import jade.domain.FIPAAgentManagement.RefuseException;
@@ -24,6 +25,18 @@ public class ContractNetResponderBehaviour extends ContractNetResponder{
     protected ACLMessage handleCfp(ACLMessage cfp) throws NotUnderstoodException, RefuseException {
         try {
             System.out.println("Agent "+myAgent.getLocalName()+": CFP received from "+cfp.getSender().getName()+". Action --> "+cfp.getContentObject());
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
+        try {
+            switch(((Message) cfp.getContentObject()).type){
+                case DemandeEchange:
+                    //TODO traiter la demande 
+
+                    break;
+                default:
+                    break;
+            }
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
