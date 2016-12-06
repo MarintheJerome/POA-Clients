@@ -54,6 +54,8 @@ public class VueClient extends Application{
 
 	private static AgentClient agent;
 
+	private List<Produit> produitsCourrant = new ArrayList<Produit>();
+	
 	@FXML
 	Slider distance;
 
@@ -62,7 +64,9 @@ public class VueClient extends Application{
 	@FXML
 	public void rechercher(){
 		Rechercher recherche = new Rechercher();
-		recherche.idProduit = Long.parseLong(this.reference.getText());
+		if(!this.reference.getText().equals("")){
+			recherche.idProduit = Long.parseLong(this.reference.getText());
+		}
 		/**
 		 * Legume
 		 * Produit Laitier
@@ -71,10 +75,14 @@ public class VueClient extends Application{
 		 * Cosmétique
 		 * High-tech
 		 */
-		recherche.nomCategorie = "Boisson";
+		recherche.nomCategorie = this.categorie.getText();
 		recherche.marque = this.marque.getText();
-		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
-		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
+		if(!this.prixMax.getText().equals("")){
+			recherche.prixMax = Float.parseFloat(this.prixMax.getText());
+		}
+		if(!this.prixMin.getText().equals("")){
+			recherche.prixMin = Float.parseFloat(this.prixMin.getText());
+		}
 		try {
 			this.agent.sending(recherche);
 		} catch (IOException e) {
@@ -83,10 +91,11 @@ public class VueClient extends Application{
 	}
 	
 	public void afficheResRecherche(List<Produit> list) throws IOException{
+		this.produitsCourrant = list;
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
 		BorderPane page = (BorderPane) loader.load();
 		PanierController controller = loader.getController();
-		
+		controller.context = 1; 
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Resultat Recherche");
@@ -98,10 +107,44 @@ public class VueClient extends Application{
 	    dialogStage.show();
 	}
 	
-	
 	@FXML
-	public void ajouter(){
-		//TODO : Faire l'ajout au panier du client
+	public boolean ajouter(){
+		/*
+		 * vrai méthode
+		 */
+		/*try{
+			long id = Long.parseLong(this.reference.getText());
+			for(Produit p : this.produitsCourrant){
+				if(p.idProduit == id){
+					agent.panier.add(p);
+					float f = Float.parseFloat(this.prixPanier.getText()) + p.prixProduit;
+					this.prixPanier.setText(f+"");
+					return true;
+				}
+			}
+			return false;
+		}
+		catch(NumberFormatException e){
+			return false;
+		}*/
+		
+		/*
+		 * Pour le test
+		 */
+		Categorie c = new Categorie();
+		c.nomCategorie = "boisson";
+		Produit p = new Produit();
+		p.idProduit = 1;
+		p.descriptionProduit = "test";
+		p.idCategorie = c;
+		p.marque = "Coca";
+		p.nomProduit = "Coca";
+		p.prixProduit = 1;
+		agent.panier.add(p);
+		float f = Float.parseFloat(this.prixPanier.getText()) + p.prixProduit;
+		this.prixPanier.setText(f+"");
+		return true;
+		
 	}
 	
 	@FXML
@@ -135,10 +178,11 @@ public class VueClient extends Application{
 	
 	@FXML
 	public void voirPanier() throws IOException{
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
 		BorderPane page = (BorderPane) loader.load();
 		PanierController controller = loader.getController();
-		
+		controller.context = 0; 
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Panier");

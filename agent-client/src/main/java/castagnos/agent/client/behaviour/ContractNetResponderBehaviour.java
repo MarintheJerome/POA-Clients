@@ -37,8 +37,6 @@ public class ContractNetResponderBehaviour extends ContractNetResponder{
         try {
             switch(((Message) cfp.getContentObject()).type){
                 case DemandeEchange:
-                    //TODO traiter la demande 
-
                     break;
                 case ResultatRecherche:
                 	ResultatRecherche res = (ResultatRecherche) cfp.getContentObject();
