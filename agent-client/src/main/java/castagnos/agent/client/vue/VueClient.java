@@ -60,19 +60,11 @@ public class VueClient extends Application{
 	@FXML
 	public void rechercher(){
 		Rechercher recherche = new Rechercher();
-<<<<<<< HEAD
 		recherche.idProduit = Long.parseLong(this.reference.getText());
 		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
 		recherche.marque = this.marque.getText();
 		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
 		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
-=======
-		recherche.reference = this.reference.getText(); // la rférence ne semble plus existé voir avec guillaume ?
-		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
-		recherche.marque = this.marque.getText();
-		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
-		recherche.prixMin =  Float.parseFloat(this.prixMin.getText());
->>>>>>> master
 		//TODO : Faire une fenêtre de selection de l'article
 	}
 	

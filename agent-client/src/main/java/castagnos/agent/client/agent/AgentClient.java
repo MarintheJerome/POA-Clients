@@ -2,12 +2,10 @@ package castagnos.agent.client.agent;
 
 import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
 import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
-<<<<<<< HEAD
 import fr.miage.agents.api.model.Produit;
-=======
 import castagnos.agent.client.vue.VueClient;
 import fr.miage.agents.api.message.Message;
->>>>>>> master
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
