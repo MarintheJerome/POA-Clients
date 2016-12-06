@@ -2,6 +2,7 @@ package castagnos.agent.client.vue;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import castagnos.agent.client.agent.AgentClient;
 import castagnos.agent.modele.CellStyle;
@@ -62,7 +63,15 @@ public class VueClient extends Application{
 	public void rechercher(){
 		Rechercher recherche = new Rechercher();
 		recherche.idProduit = Long.parseLong(this.reference.getText());
-		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
+		/**
+		 * Legume
+		 * Produit Laitier
+		 * Boisson
+		 * Produit entretient
+		 * Cosmétique
+		 * High-tech
+		 */
+		recherche.nomCategorie = "Boisson";
 		recherche.marque = this.marque.getText();
 		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
 		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
@@ -73,15 +82,20 @@ public class VueClient extends Application{
 		}
 	}
 	
-	private Categorie demandeCategorie(String nomCategorie){
-		//TODO: avoir la réponse contenant toutes les catégories pour remplacé le null
-		ResultatCategorie res = null;
-		for(Categorie c: res.categorieList){
-			if(c.nomCategorie.equals(nomCategorie)){
-				return c;
-			}
-		}
-		return null;
+	public void afficheResRecherche(List<Produit> list) throws IOException{
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
+		BorderPane page = (BorderPane) loader.load();
+		PanierController controller = loader.getController();
+		
+	    Stage dialogStage = new Stage();
+	    setStage(dialogStage);
+	    dialogStage.setTitle("Resultat Recherche");
+	    dialogStage.initModality(Modality.WINDOW_MODAL); 
+	    Scene scene = new Scene(page);
+	    dialogStage.setScene(scene);
+	    System.out.println(controller);
+	    controller.loadPanier((ArrayList<Produit>)list);
+	    dialogStage.show();
 	}
 	
 	
@@ -132,7 +146,7 @@ public class VueClient extends Application{
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
 	    System.out.println(controller);
-	    controller.loadAgent(agent);
+	    controller.loadPanier(agent.panier);
 	    dialogStage.show();
 	}
 	

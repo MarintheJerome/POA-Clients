@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
 public class ReceiveBehaviour extends SimpleBehaviour {
 
     private final static MessageTemplate mt = MessageTemplate.MatchPerformative(ACLMessage.REQUEST);
-
+    
     public ReceiveBehaviour(Agent agent) {
         super(agent);
     }

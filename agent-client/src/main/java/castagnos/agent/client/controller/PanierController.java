@@ -22,16 +22,13 @@ public class PanierController  implements Initializable{
 	@FXML
 	Button quit;
 	
-	private AgentClient agent;
-	
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		
 	}
 	
-	public void loadAgent(AgentClient ac){
-        this.agent = ac;
-        ObservableList<Produit> panier = FXCollections.observableArrayList(agent.panier);
+	public void loadPanier(ArrayList<Produit> list){
+        ObservableList<Produit> panier = FXCollections.observableArrayList(list);
 		this.listeProduits.setItems(panier);
     }
 	
