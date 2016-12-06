@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 /**
  * Created by jerome on 06/12/2016.
  */
-public class NegociationController implements Initializable{
+public class NegociationController{
 
     @FXML
     private RadioButton radioSimple;
@@ -41,20 +41,16 @@ public class NegociationController implements Initializable{
 
     private AgentClient agentClient;
 
-    public void initialize(URL location, ResourceBundle resources) {
-       // On récupère la liste des autres agents clients présents
-       ArrayList<String> listAgents = agentClient.getOthers("Client");
-       for(String nomAgent : listAgents){
-           listeClient.getItems().add(nomAgent);
-       }
+    public void loadRessource(AgentClient ac){
+        agentClient = ac;
+        ArrayList<String> listAgents = agentClient.getOthers("Client");
+        for(String nomAgent : listAgents){
+            listeClient.getItems().add(nomAgent);
+        }
     }
 
     @FXML
     public void demander() {
 
-    }
-
-    public void setAgent(AgentClient client){
-        this.agentClient = client;
     }
 }
