@@ -2,8 +2,10 @@ package castagnos.agent.client.agent;
 
 import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
 import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
+import fr.miage.agents.api.model.Produit;
 import castagnos.agent.client.vue.VueClient;
 import fr.miage.agents.api.message.Message;
+
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -35,6 +37,8 @@ public class AgentClient extends Agent {
      */
     private ArrayList<String> markets = new ArrayList<String>();
 
+    public ArrayList<Produit> panier = new ArrayList<Produit>();
+    
     /**
      * Messages
      */

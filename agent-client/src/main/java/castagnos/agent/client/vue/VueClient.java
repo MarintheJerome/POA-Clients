@@ -60,11 +60,11 @@ public class VueClient extends Application{
 	@FXML
 	public void rechercher(){
 		Rechercher recherche = new Rechercher();
-		recherche.reference = this.reference.getText(); // la rférence ne semble plus existé voir avec guillaume ?
+		recherche.idProduit = Long.parseLong(this.reference.getText());
 		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
 		recherche.marque = this.marque.getText();
 		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
-		recherche.prixMin =  Float.parseFloat(this.prixMin.getText());
+		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
 		//TODO : Faire une fenêtre de selection de l'article
 	}
 	
@@ -108,6 +108,11 @@ public class VueClient extends Application{
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
 	    dialogStage.show();
+	}
+	
+	@FXML
+	public void voirPanier(){
+		
 	}
 	
 	private void setStage(Stage stage){
