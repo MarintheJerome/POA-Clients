@@ -50,7 +50,7 @@ public class VueClient extends Application{
 	@FXML
 	ComboBox listProduit, listClient;
 
-	private AgentClient agent;
+	private static AgentClient agent;
 
 	@FXML
 	Slider distance;
@@ -160,7 +160,7 @@ public class VueClient extends Application{
 
 	}
 
-	public void launchMain(AgentClient ac){
+	public static void launchMain(AgentClient ac){
 		agent = ac;
 		launch();
 	}
