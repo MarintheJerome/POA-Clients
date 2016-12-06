@@ -10,7 +10,7 @@
    <center>
       <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <content>
-            <ListView fx:id="listeProduit" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="426.0" prefWidth="363.0" />
+            <ListView fx:id="listeProduits" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="426.0" prefWidth="363.0" />
          </content>
       </ScrollPane>
    </center>

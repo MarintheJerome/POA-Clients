@@ -37,7 +37,7 @@ import javafx.util.Callback;
 public class VueClient extends Application{
 
 	@FXML
-	ListView<Produit> listeProduit;
+	ListView<Produit> listeProduits;
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
 	@FXML
@@ -117,16 +117,6 @@ public class VueClient extends Application{
 	
 	@FXML
 	public void voirPanier() throws IOException{
-		ObservableList<Produit> panier = FXCollections.observableArrayList(agent.panier);
-		this.listeProduit.setItems(panier);
-	    this.listeProduit.setCellFactory(new Callback<ListView<Produit>, 
-	            ListCell<Produit>>() {
-	            public ListCell<Produit> call(ListView<Produit> list) {
-	                return new CellStyle();
-	            }
-	        }
-	    );
-		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
 		BorderPane page = (BorderPane) loader.load();
 	    Stage dialogStage = new Stage();
@@ -137,8 +127,7 @@ public class VueClient extends Application{
 	    dialogStage.setScene(scene);
 	    dialogStage.show();
 	}
-
-
+	
 	private void setStage(Stage stage){
 		this.stage = stage;
 	}
@@ -151,6 +140,7 @@ public class VueClient extends Application{
 	
 	@FXML
 	public void quit(){
+		
 		Stage stage = (Stage) this.quit.getScene().getWindow();
 		stage.close();
 	}
