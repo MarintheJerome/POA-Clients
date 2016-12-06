@@ -154,6 +154,17 @@ public class AgentClient extends Agent {
         message.setContentObject(content);
     }
 
+    public void sending(Serializable content, String receiver) throws IOException {
+        // MAJ des agents détéctés.
+        markets = getOthers(TYPEM);
+        message = new ACLMessage(ACLMessage.CFP);
+        message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
+        message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+        message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
+        message.setContentObject(content);
+        message.
+    }
+
     public String getAgentName(){
         return SELF;
     }

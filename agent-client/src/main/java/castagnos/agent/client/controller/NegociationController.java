@@ -2,12 +2,14 @@ package castagnos.agent.client.controller;
 
 import castagnos.agent.client.agent.AgentClient;
 import castagnos.agent.client.common.Popup;
+import fr.miage.agents.api.message.interClients.Demande;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -72,9 +74,10 @@ public class NegociationController implements Initializable{
     }
 
     @FXML
-    public void demander() {
+    public void demander() throws IOException {
         if(!checkErrors()){
-
+            Demande demande = new Demande(listProduits.getSelectionModel().getSelectedItem(), Integer.parseInt(quantiteNegociation.getText()));
+            agentClient.sending(demande, listeClient.getSelectionModel().getSelectedItem());
         }
     }
 
