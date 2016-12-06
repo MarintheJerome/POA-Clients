@@ -20,8 +20,8 @@ public class main {
         AgentController sender;
         AgentController printer;
         try {
-            Object valeurs[] = {"receiver"};
-            receiver = cc.createNewAgent("receiver", "castagnos.agent.client.agent.AgentClient", valeurs);
+            Object valeurs[] = {"MainClient"};
+            receiver = cc.createNewAgent("MainClient", "castagnos.agent.client.agent.AgentClient", valeurs);
             receiver.start();
             Object valeurs2[] = {"sender"};
             sender = cc.createNewAgent("sender", "castagnos.agent.client.agent.AgentClient", valeurs2);

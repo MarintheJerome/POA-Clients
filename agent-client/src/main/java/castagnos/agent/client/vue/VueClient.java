@@ -1,15 +1,23 @@
 package castagnos.agent.client.vue;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import castagnos.agent.client.agent.AgentClient;
-import fr.miage.agents.api.message.demande.Recherche;
-import fr.miage.agents.api.message.reponse.ResultatCategorie;
+import fr.miage.agents.api.message.recherche.Rechercher;
+import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
 
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
+import jade.wrapper.StaleProxyException;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -27,7 +35,7 @@ import javafx.stage.Stage;
 /**
  * Created by arnaud on 10/11/2016.
  */
-public class VueClient extends Application {
+public class VueClient extends Application{
 
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
@@ -42,21 +50,21 @@ public class VueClient extends Application {
 	@FXML
 	ComboBox listProduit, listClient;
 
-	AgentClient agent;
+	private AgentClient agent;
 
 	@FXML
 	Slider distance;
 
 	Stage stage;
-	
+
 	@FXML
 	public void rechercher(){
-		Recherche recherche = new Recherche();
-		recherche.reference = this.reference.getText();
+		Rechercher recherche = new Rechercher();
+		recherche.reference = this.reference.getText(); // la rférence ne semble plus existé voir avec guillaume ?
 		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
 		recherche.marque = this.marque.getText();
-		recherche.prixMax = Double.parseDouble(this.prixMax.getText());
-		recherche.prixMin = Double.parseDouble(this.prixMin.getText());
+		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
+		recherche.prixMin =  Float.parseFloat(this.prixMin.getText());
 		//TODO : Faire une fenêtre de selection de l'article
 	}
 	
@@ -147,7 +155,7 @@ public class VueClient extends Application {
 
 	}
 
-	public void launcher(AgentClient ac){
+	public void launchMain(AgentClient ac){
 		agent = ac;
 		launch();
 	}
