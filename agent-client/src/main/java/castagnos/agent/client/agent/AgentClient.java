@@ -17,6 +17,8 @@ import jade.proto.ContractNetInitiator;
 import jade.proto.ContractNetResponder;
 import jade.util.leap.Iterator;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Vector;
@@ -57,7 +59,11 @@ public class AgentClient extends Agent {
         System.out.println("Hello my name is "+SELF);
 
         if(SELF.equals("sender")){
-            sending("Hello my friends !");
+            try {
+                sending("Hello my friends !");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         // Ajouts des comportements de l'agent
@@ -124,7 +130,7 @@ public class AgentClient extends Agent {
     /**
      * Méthode d'envoie de message.
      */
-    private void sending(String content){
+    private void sending(Serializable content) throws IOException {
         // MAJ des agents détéctés.
         others = getOthers(TYPEC);
         markets = getOthers(TYPEM);
@@ -134,6 +140,6 @@ public class AgentClient extends Agent {
         }
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-        message.setContent(content);
+        message.setContentObject(content);
     }
 }
