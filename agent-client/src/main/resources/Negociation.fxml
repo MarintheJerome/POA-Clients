@@ -50,7 +50,7 @@
                   <Font name="Arial" size="18.0" />
                </font>
             </RadioButton>
-            <ComboBox fx:id="listeProduit" prefHeight="31.0" prefWidth="395.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <ComboBox fx:id="listProduits" prefHeight="31.0" prefWidth="395.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Produit demandé : " GridPane.rowIndex="3">
                <font>
                   <Font name="Arial" size="18.0" />

@@ -49,7 +49,7 @@ public class VueClient extends Application{
 	@FXML
 	RadioButton radioSimple, radioReponse, radioReponseNegative;
 	@FXML
-	ComboBox listProduit, listClient;
+	ComboBox listProduits, listClient;
 
 	private static AgentClient agent;
 
@@ -172,8 +172,7 @@ public class VueClient extends Application{
 	}
 
 	private String getNomClient(){
-		//TODO : méthode de recherche du nom du client
-		return "Client";
+		return agent.getAgentName();
 	}
 
 	@Override
