@@ -18,7 +18,6 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.leap.Iterator;
 
 import java.io.IOException;
-import java.io.IOException;
 import java.io.Serializable;
 
 import java.util.ArrayList;
@@ -70,11 +69,6 @@ public class AgentClient extends Agent {
             }
         }
 
-        //Ouverture du client Main
-        if(SELF.equals("MainClient")){
-            launcherMainClient(this);
-        }
-
         // Ajouts des comportements de l'agent
         addBehaviour(new ContractNetInitiatorBehavior(this, message));
 
@@ -83,6 +77,11 @@ public class AgentClient extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.CFP) );
 
         addBehaviour(new ContractNetResponderBehaviour(this, template));
+
+        //Ouverture du client Main
+        if(SELF.equals("MainClient")){
+            VueClient.launchMain(this);
+        }
     }
 
 
@@ -154,7 +153,4 @@ public class AgentClient extends Agent {
         message.setContentObject(content);
     }
 
-    private static void launcherMainClient(AgentClient a){
-        VueClient.launchMain(a);
-    }
 }
