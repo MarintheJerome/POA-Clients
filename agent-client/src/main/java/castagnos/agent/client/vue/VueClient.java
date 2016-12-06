@@ -4,17 +4,21 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.modele.CellStyle;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
 import fr.miage.agents.api.model.Produit;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
@@ -25,6 +29,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * Created by arnaud on 10/11/2016.
@@ -32,7 +37,7 @@ import javafx.stage.Stage;
 public class VueClient extends Application{
 
 	@FXML
-	ListView listeProduit;
+	ListView<Produit> listeProduit;
 	@FXML
 	Text ref, prixProduit, prixPanier, kilometer;
 	@FXML
@@ -112,19 +117,28 @@ public class VueClient extends Application{
 	
 	@FXML
 	public void voirPanier() throws IOException{
-		ArrayList<Produit> panier = agent.panier;
+		ObservableList<Produit> panier = FXCollections.observableArrayList(agent.panier);
+		this.listeProduit.setItems(panier);
+	    this.listeProduit.setCellFactory(new Callback<ListView<Produit>, 
+	            ListCell<Produit>>() {
+	            public ListCell<Produit> call(ListView<Produit> list) {
+	                return new CellStyle();
+	            }
+	        }
+	    );
+		
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
 		BorderPane page = (BorderPane) loader.load();
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Panier");
-	    dialogStage.initModality(Modality.WINDOW_MODAL);
+	    dialogStage.initModality(Modality.WINDOW_MODAL); 
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
 	    dialogStage.show();
-		
 	}
-	
+
+
 	private void setStage(Stage stage){
 		this.stage = stage;
 	}
