@@ -1,6 +1,12 @@
 package castagnos.agent.client.behaviour;
 
+
 import castagnos.agent.client.agent.AgentClient;
+import java.io.IOException;
+import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.client.vue.VueClient;
+import fr.miage.agents.api.message.Message;
+import fr.miage.agents.api.message.recherche.ResultatRecherche;
 import jade.core.Agent;
 import jade.domain.FIPAAgentManagement.FailureException;
 import jade.domain.FIPAAgentManagement.NotUnderstoodException;
@@ -17,6 +23,8 @@ import java.util.Date;
  * Created by jerome on 03/12/2016.
  */
 public class ContractNetResponderBehaviour extends ContractNetResponder{
+	
+	VueClient vue = new VueClient();
 
     public AgentClient agent;
 
@@ -31,6 +39,24 @@ public class ContractNetResponderBehaviour extends ContractNetResponder{
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
+        try {
+            switch(((Message) cfp.getContentObject()).type){
+                case DemandeEchange:
+                    break;
+                case ResultatRecherche:
+                	ResultatRecherche res = (ResultatRecherche) cfp.getContentObject();
+                	vue.afficheResRecherche(res.produitList);
+                	break;
+                	
+                default:
+                    break;
+            }
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
         ACLMessage propose = cfp.createReply();
         propose.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
         if(true){

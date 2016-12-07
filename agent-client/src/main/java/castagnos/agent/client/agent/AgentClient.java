@@ -4,7 +4,6 @@ import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
 import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
 import fr.miage.agents.api.model.Produit;
 import castagnos.agent.client.vue.VueClient;
-import fr.miage.agents.api.message.Message;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -32,7 +31,11 @@ public class AgentClient extends Agent {
      * Autre clients dans le réseau d'agent
      */
     public ArrayList<String> others = new ArrayList<String>();
-    public ArrayList<String> markets = new ArrayList<String>();
+
+    /**
+     * Supermarché que l'on peut voir sur le réseau d'agent
+     */
+    private ArrayList<String> markets = new ArrayList<String>();
 
     public ArrayList<Produit> panier = new ArrayList<Produit>();
 
@@ -43,11 +46,11 @@ public class AgentClient extends Agent {
      */
     private ACLMessage message;
 
-    /*
-        Quelques attributs utiles.
+    /**
+     * Quelques attributs utiles.
      */
-    public final String TYPEC = "Client";
-    public final String TYPEM = "Supermarché";
+    public final static String TYPEC = "Client";
+    public final static String TYPEM = "Supermarché";
     public String SELF = "";
 
     protected void setup() {
@@ -59,7 +62,7 @@ public class AgentClient extends Agent {
         registerService(SELF);
         System.out.println("L'agent : "+SELF+" est opérationnel.");
 
-        // Test
+
         if(SELF.equals("sender")){
             try {
                 sending("Hello my friends !", TYPEC);
@@ -81,13 +84,18 @@ public class AgentClient extends Agent {
                 MessageTemplate.MatchPerformative(ACLMessage.CFP) );
 
         addBehaviour(new ContractNetResponderBehaviour(this, template));
+
+        //Ouverture du client Main
+        if(SELF.equals("MainClient")){
+            VueClient.launchMain(this);
+        }
     }
 
 
     /**
      * Méthode de retour des agents
      */
-    private ArrayList<String> getOthers(String type) {
+    public ArrayList<String> getOthers(String type) {
         DFAgentDescription dfd = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
         sd.setType(type);
@@ -138,7 +146,7 @@ public class AgentClient extends Agent {
      * Méthode d'envoie de message.
      */
 
-    private void sending(Serializable content, String type) throws IOException {
+    public void sending(Serializable content, String type) throws IOException {
         // MAJ des agents détéctés.
         others = getOthers(TYPEC);
         markets = getOthers(TYPEM);
@@ -148,7 +156,7 @@ public class AgentClient extends Agent {
             if(type.equals(TYPEC)) used = others;
             if(type.equals(TYPEM)) used = markets;
             for (int i = 0; i < used.size(); ++i) {
-                message.addReceiver(new AID(others.get(i), AID.ISLOCALNAME));
+                message.addReceiver(new AID(used.get(i), AID.ISLOCALNAME));
             }
             nResponders = used.size();
             message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
@@ -157,7 +165,24 @@ public class AgentClient extends Agent {
         }else{
             System.out.println("Agent "+getName()+" a tenté de lancer un message foireux.");
         }
-
     }
 
+    public void sending(Serializable content, String type, String receiver) throws IOException {
+        // MAJ des agents détéctés.
+        others = getOthers(TYPEC);
+        markets = getOthers(TYPEM);
+        if(type.equals(TYPEC) || type.equals(TYPEM)){
+            message = new ACLMessage(ACLMessage.CFP);
+            ArrayList<String> used = null;
+            if(type.equals(TYPEC)) used = others;
+            if(type.equals(TYPEM)) used = markets;
+            message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
+            nResponders = used.size();
+            message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+            message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
+            message.setContentObject(content);
+        }else{
+            System.out.println("Agent "+getName()+" a tenté de lancer un message foireux.");
+        }
+    }
 }

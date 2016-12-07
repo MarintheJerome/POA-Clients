@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="productList" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="518.0" prefWidth="391.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.60">
-  <content>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
-  </content>
-</ScrollPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="365.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="castagnos.agent.client.controller.PanierController">
+   <center>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <content>
+            <ListView fx:id="listeProduits" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="426.0" prefWidth="363.0" />
+         </content>
+      </ScrollPane>
+   </center>
+   <bottom>
+      <Button fx:id="quit" mnemonicParsing="false" onAction="#quit" text="OK" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Arial" size="24.0" />
+         </font>
+      </Button>
+   </bottom>
+</BorderPane>

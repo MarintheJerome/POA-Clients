@@ -1,27 +1,28 @@
 package castagnos.agent.client.vue;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
 
 import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.modele.CellStyle;
+import castagnos.agent.client.controller.NegociationController;
+import castagnos.agent.client.controller.PanierController;
 import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.message.util.ResultatCategorie;
 import fr.miage.agents.api.model.Categorie;
-
-import jade.core.Profile;
-import jade.core.ProfileImpl;
-import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
-import jade.wrapper.StaleProxyException;
+import fr.miage.agents.api.model.Produit;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -31,6 +32,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * Created by arnaud on 10/11/2016.
@@ -48,10 +50,12 @@ public class VueClient extends Application{
 	@FXML
 	RadioButton radioSimple, radioReponse, radioReponseNegative;
 	@FXML
-	ComboBox listProduit, listClient;
+	ComboBox listProduits, listClient;
 
 	private static AgentClient agent;
 
+	private List<Produit> produitsCourrant = new ArrayList<Produit>();
+	
 	@FXML
 	Slider distance;
 
@@ -60,29 +64,87 @@ public class VueClient extends Application{
 	@FXML
 	public void rechercher(){
 		Rechercher recherche = new Rechercher();
-		recherche.idProduit = Long.parseLong(this.reference.getText());
-		recherche.categorie = this.demandeCategorie(this.categorie.getText().toString());
-		recherche.marque = this.marque.getText();
-		recherche.prixMax = Float.parseFloat(this.prixMax.getText());
-		recherche.prixMin = Float.parseFloat(this.prixMin.getText());
-		//TODO : Faire une fenêtre de selection de l'article
-	}
-	
-	private Categorie demandeCategorie(String nomCategorie){
-		//TODO: avoir la réponse contenant toutes les catégories pour remplacé le null
-		ResultatCategorie res = null;
-		for(Categorie c: res.categorieList){
-			if(c.nomCategorie.equals(nomCategorie)){
-				return c;
-			}
+		if(!this.reference.getText().equals("")){
+			recherche.idProduit = Long.parseLong(this.reference.getText());
 		}
-		return null;
+		/**
+		 * Legume
+		 * Produit Laitier
+		 * Boisson
+		 * Produit entretient
+		 * Cosmétique
+		 * High-tech
+		 */
+		recherche.nomCategorie = this.categorie.getText();
+		recherche.marque = this.marque.getText();
+		if(!this.prixMax.getText().equals("")){
+			recherche.prixMax = Float.parseFloat(this.prixMax.getText());
+		}
+		if(!this.prixMin.getText().equals("")){
+			recherche.prixMin = Float.parseFloat(this.prixMin.getText());
+		}
+		try {
+			this.agent.sending(recherche, AgentClient.TYPEM);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
+	public void afficheResRecherche(List<Produit> list) throws IOException{
+		this.produitsCourrant = list;
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
+		BorderPane page = (BorderPane) loader.load();
+		PanierController controller = loader.getController();
+		controller.context = 1; 
+	    Stage dialogStage = new Stage();
+	    setStage(dialogStage);
+	    dialogStage.setTitle("Resultat Recherche");
+	    dialogStage.initModality(Modality.WINDOW_MODAL); 
+	    Scene scene = new Scene(page);
+	    dialogStage.setScene(scene);
+	    System.out.println(controller);
+	    controller.loadPanier((ArrayList<Produit>)list);
+	    dialogStage.show();
+	}
 	
 	@FXML
-	public void ajouter(){
-		//TODO : Faire l'ajout au panier du client
+	public boolean ajouter(){
+		/*
+		 * vrai méthode
+		 */
+		/*try{
+			long id = Long.parseLong(this.reference.getText());
+			for(Produit p : this.produitsCourrant){
+				if(p.idProduit == id){
+					agent.panier.add(p);
+					float f = Float.parseFloat(this.prixPanier.getText()) + p.prixProduit;
+					this.prixPanier.setText(f+"");
+					return true;
+				}
+			}
+			return false;
+		}
+		catch(NumberFormatException e){
+			return false;
+		}*/
+		
+		/*
+		 * Pour le test
+		 */
+		Categorie c = new Categorie();
+		c.nomCategorie = "boisson";
+		Produit p = new Produit();
+		p.idProduit = 1;
+		p.descriptionProduit = "test";
+		p.idCategorie = c;
+		p.marque = "Coca";
+		p.nomProduit = "Coca";
+		p.prixProduit = 1;
+		agent.panier.add(p);
+		float f = Float.parseFloat(this.prixPanier.getText()) + p.prixProduit;
+		this.prixPanier.setText(f+"");
+		return true;
+		
 	}
 	
 	@FXML
@@ -100,19 +162,36 @@ public class VueClient extends Application{
 	@FXML
 	public void negocier() throws IOException{
 		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("Negociation.fxml"));
-	    AnchorPane page = (AnchorPane) loader.load();
+
+	    AnchorPane page = loader.load();
+		NegociationController controller = loader.getController();
+
 	    Stage dialogStage = new Stage();
 	    setStage(dialogStage);
 	    dialogStage.setTitle("Simple Demande");
 	    dialogStage.initModality(Modality.WINDOW_MODAL);
 	    Scene scene = new Scene(page);
 	    dialogStage.setScene(scene);
+		controller.loadRessource(agent);
 	    dialogStage.show();
 	}
 	
 	@FXML
-	public void voirPanier(){
+	public void voirPanier() throws IOException{
 		
+		FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("productList.fxml"));
+		BorderPane page = (BorderPane) loader.load();
+		PanierController controller = loader.getController();
+		controller.context = 0; 
+	    Stage dialogStage = new Stage();
+	    setStage(dialogStage);
+	    dialogStage.setTitle("Panier");
+	    dialogStage.initModality(Modality.WINDOW_MODAL); 
+	    Scene scene = new Scene(page);
+	    dialogStage.setScene(scene);
+	    System.out.println(controller);
+	    controller.loadPanier(agent.panier);
+	    dialogStage.show();
 	}
 	
 	private void setStage(Stage stage){
@@ -142,13 +221,11 @@ public class VueClient extends Application{
 	}
 
 	private String getNomClient(){
-		//TODO : méthode de recherche du nom du client
-		return "Client";
+		return agent.SELF;
 	}
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		
 		FXMLLoader preloader = new FXMLLoader(getClass().getClassLoader().getResource("Client.fxml"));
 		final Node node = preloader.load();
 		final BorderPane root = new BorderPane(node); 
@@ -157,7 +234,6 @@ public class VueClient extends Application{
 		primaryStage.setScene(scene); 
 		primaryStage.show();
 		this.stage = primaryStage;
-
 	}
 
 	public static void launchMain(AgentClient ac){
