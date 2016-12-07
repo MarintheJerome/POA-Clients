@@ -168,21 +168,11 @@ public class AgentClient extends Agent {
     }
 
     public void sending(Serializable content, String type, String receiver) throws IOException {
-        // MAJ des agents détéctés.
-        others = getOthers(TYPEC);
-        markets = getOthers(TYPEM);
-        if(type.equals(TYPEC) || type.equals(TYPEM)){
-            message = new ACLMessage(ACLMessage.CFP);
-            ArrayList<String> used = null;
-            if(type.equals(TYPEC)) used = others;
-            if(type.equals(TYPEM)) used = markets;
-            message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
-            nResponders = used.size();
-            message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-            message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
-            message.setContentObject(content);
-        }else{
-            System.out.println("Agent "+getName()+" a tenté de lancer un message foireux.");
-        }
+        message = new ACLMessage(ACLMessage.CFP);
+        message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
+        nResponders = 1;
+        message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+        message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
+        message.setContentObject(content);
     }
 }
