@@ -31,14 +31,13 @@ public class AgentClient extends Agent {
     /**
      * Autre clients dans le réseau d'agent
      */
-    private ArrayList<String> others = new ArrayList<String>();
-    /**
-     * Supermarché que l'on peut voir sur le réseau d'agent
-     */
-    private ArrayList<String> markets = new ArrayList<String>();
+    public ArrayList<String> others = new ArrayList<String>();
+    public ArrayList<String> markets = new ArrayList<String>();
 
     public ArrayList<Produit> panier = new ArrayList<Produit>();
-    
+
+    public int nResponders = -1;
+
     /**
      * Messages
      */
@@ -47,9 +46,9 @@ public class AgentClient extends Agent {
     /*
         Quelques attributs utiles.
      */
-    private final String TYPEC = "Client";
-    private final String TYPEM = "Supermarché";
-    private String SELF = "";
+    public final String TYPEC = "Client";
+    public final String TYPEM = "Supermarché";
+    public String SELF = "";
 
     protected void setup() {
         // Ajout dans le registre
@@ -58,12 +57,12 @@ public class AgentClient extends Agent {
         if (args.length != 1) System.exit(-2);
         SELF = (String) args[0];
         registerService(SELF);
-        System.out.println("Hello my name is "+SELF);
+        System.out.println("L'agent : "+SELF+" est opérationnel.");
 
         // Test
         if(SELF.equals("sender")){
             try {
-                sending("Hello my friends !");
+                sending("Hello my friends !", TYPEC);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -71,7 +70,7 @@ public class AgentClient extends Agent {
 
         //Ouverture du client Main
         if(SELF.equals("MainClient")){
-            VueClient.launchMain(this);
+        //    VueClient.launchMain(this);
         }
 
         // Ajouts des comportements de l'agent
@@ -109,7 +108,7 @@ public class AgentClient extends Agent {
                 }
             }
             if(!info.equals("")){
-                System.out.print(SELF+" has found "+type+" : ");
+                System.out.print(SELF+" a trouvé les agents "+type+" : ");
                 System.out.println(info);
             }
         } catch (FIPAException e) {
@@ -139,18 +138,26 @@ public class AgentClient extends Agent {
      * Méthode d'envoie de message.
      */
 
-    private void sending(Serializable content) throws IOException {
-
+    private void sending(Serializable content, String type) throws IOException {
         // MAJ des agents détéctés.
         others = getOthers(TYPEC);
         markets = getOthers(TYPEM);
-        message = new ACLMessage(ACLMessage.CFP);
-        for (int i = 0; i < others.size(); ++i) {
-            message.addReceiver(new AID(others.get(i), AID.ISLOCALNAME));
+        if(type.equals(TYPEC) || type.equals(TYPEM)){
+            message = new ACLMessage(ACLMessage.CFP);
+            ArrayList<String> used = null;
+            if(type.equals(TYPEC)) used = others;
+            if(type.equals(TYPEM)) used = markets;
+            for (int i = 0; i < used.size(); ++i) {
+                message.addReceiver(new AID(others.get(i), AID.ISLOCALNAME));
+            }
+            nResponders = used.size();
+            message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
+            message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
+            message.setContentObject(content);
+        }else{
+            System.out.println("Agent "+getName()+" a tenté de lancer un message foireux.");
         }
-        message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-        message.setReplyByDate(new Date(System.currentTimeMillis() + 10000));
-        message.setContentObject(content);
+
     }
 
 }
