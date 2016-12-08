@@ -1,6 +1,7 @@
 package castagnos.agent.client;
 
 import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.client.agent.MockSupermarket;
 import fr.miage.agents.api.model.Produit;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -29,6 +30,23 @@ public class main {
         p.setParameter(Profile.GUI, "true");
         ContainerController cc =runtime.createMainContainer(p);
 
+        
+        AgentController supermarket1;
+		try {
+			MockSupermarket sm1 = new MockSupermarket();
+	        sm1.SELF = "SuperU";
+			supermarket1 = cc.acceptNewAgent("SuperU", sm1);
+			supermarket1.start();
+	        
+	        MockSupermarket sm2 = new MockSupermarket();
+	        sm2.SELF = "Auchan";
+	        AgentController supermarket2 = cc.acceptNewAgent("Supermarket2", sm2);
+	        supermarket2.start();
+		} catch (StaleProxyException e1) {
+			e1.printStackTrace();
+		}
+        
+        
         listeAgents = new ArrayList<AgentClient>();
         listeNomAgents = new ArrayList<String>();
         listeProduits = new ArrayList<Produit>();
