@@ -114,7 +114,6 @@ public class AgentClient extends Agent {
     }
 
     public void sendProduit(Produit produit, String receiver, String type){
-
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         try {

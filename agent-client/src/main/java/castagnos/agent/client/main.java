@@ -1,7 +1,9 @@
 package castagnos.agent.client;
 
 import castagnos.agent.client.agent.AgentClient;
+import fr.miage.agents.api.model.Categorie;
 import fr.miage.agents.api.model.Produit;
+import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentContainer;
@@ -19,6 +21,9 @@ public class main {
 
     private static Scanner sc;
     private static ArrayList<AgentClient> listeAgents;
+    private static ArrayList<String> listeNomAgents;
+    private static ArrayList<Produit> listeProduits;
+    private static ArrayList<String> listeNomProduits;
 
     public static void main(String[] args){
         jade.core.Runtime runtime = jade.core.Runtime.instance();
@@ -28,11 +33,16 @@ public class main {
         ContainerController cc =runtime.createMainContainer(p);
 
         listeAgents = new ArrayList<AgentClient>();
+        listeNomAgents = new ArrayList<String>();
+        listeProduits = new ArrayList<Produit>();
+        listeNomProduits = new ArrayList<String>();
+
+        remplirListeProduits();
 
         int reponseUtilisateur = 0;
-        while (reponseUtilisateur != 3){
+        while (reponseUtilisateur != 5){
             affichageOptions();
-            reponseUtilisateur = intInput(1, 3);
+            reponseUtilisateur = intInput(1, 5);
             switch(reponseUtilisateur){
                 case 1:
                     try {
@@ -44,21 +54,53 @@ public class main {
                 case 2:
                     affichageAgents();
                     break;
-                case 6:
+                case 3:
+                    affichageProduits();
+                    break;
+                case 4:
+                    demandeEchange();
+                    break;
+                case 5:
                     System.exit(0);
             }
         }
     }
 
+    private static void remplirListeProduits() {
+        listeProduits.add(creerProduit("Purée", "La meilleure purée sur le marché ! ", 12));
+        listeProduits.add(creerProduit("Compote", "Les fruits c'est bon ! ", 8));
+        listeProduits.add(creerProduit("Café", "trop bon ", 4));
+        listeProduits.add(creerProduit("Champignon", "De paris", 3));
+        listeProduits.add(creerProduit("Pomme", "Golden", 2));
+        listeProduits.add(creerProduit("Carotte", "pourries", 5));
+
+        listeNomProduits.add("Purée");
+        listeNomProduits.add("Compote");
+        listeNomProduits.add("Café");
+        listeNomProduits.add("Champignon");
+        listeNomProduits.add("Pomme");
+        listeNomProduits.add("Carotte");
+    }
+
+    private static Produit creerProduit(String nomProduit, String descriptionProduit, float prixProduit){
+        Produit produit = new Produit();
+        produit.nomProduit = nomProduit;
+        produit.descriptionProduit = descriptionProduit;
+        produit.prixProduit = prixProduit;
+        return produit;
+    }
+
     private static void affichageOptions(){
         try {
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         System.out.println("\n1 - Créer un agent");
         System.out.println("2 - Voir les agents présents");
-        System.out.println("3 - Quitter");
+        System.out.println("3 - Voir la liste des produits");
+        System.out.println("4 - Envoyer une demande d'échange");
+        System.out.println("5 - Quitter");
     }
 
     public static String stringInput(){
@@ -96,10 +138,15 @@ public class main {
         AgentController ninja = cc.acceptNewAgent(nomAgent, ac);
         ninja.start();
         listeAgents.add(ac);
+        listeNomAgents.add(nomAgent);
+    }
+
+    private static boolean existeAgent(int nombre){
+        return listeAgents.size() > nombre;
     }
 
     private static void affichageAgents() {
-        if(listeAgents.size() > 0) {
+        if(existeAgent(0)) {
             System.out.print("Type de l'agent (Client ou Supermarché) : ");
             String type = stringInput();
             ArrayList<String> agents = listeAgents.get(0).getOthers(type);
@@ -114,6 +161,55 @@ public class main {
         else{
             System.out.println("Pas d'agent présent.");
         }
+    }
 
+    private static void affichageProduits() {
+        for(Produit produit : listeProduits){
+            System.out.println(produit.nomProduit+" - "+produit.prixProduit+" €");
+        }
+    }
+
+    private static void demandeEchange() {
+        if(existeAgent(1)) { // au moins 2 agents
+            System.out.print("Quel agent initiera l'échange ? ");
+            String agentEnvoyeur = stringInput();
+            if(listeNomAgents.contains(agentEnvoyeur)){ // bon nom agent envoyeur
+                System.out.print("Quel agent recevra l'échange ? ");
+                String agentReceveur = stringInput();
+                if(listeNomAgents.contains(agentReceveur) && !agentReceveur.equals(agentEnvoyeur)){ // bon nom agent receveur
+                    System.out.print("Quel produit demandé ? ");
+                    String nomProduit = stringInput();
+                    if(listeNomProduits.contains(nomProduit)){ // le produit existe
+                        getAgentFromName(agentEnvoyeur).sendProduit(getProductFromName(nomProduit), agentReceveur, "Client");
+                    }
+                    else{ // le produit existe pas
+                        System.out.println("Le produit n'existe pas.");
+                    }
+                }
+                else{ // mauvais nom agent receveur
+                    System.out.println("Mauvais nom d'agent.");
+                }
+            }else{ // mauvais nom agent envoyeur
+                System.out.println("L'agent "+agentEnvoyeur+" n'existe pas");
+            }
+        }else{ // il y a pas d'agent
+            System.out.println("Il faut au moins 2 agents pour un échange.");
+        }
+    }
+
+    private static AgentClient getAgentFromName(String name){
+        for(AgentClient agent : listeAgents){
+            if(agent.getLocalName().equals(name))
+                return agent;
+        }
+        return null;
+    }
+
+    private static Produit getProductFromName(String name){
+        for(Produit produit : listeProduits){
+            if(produit.nomProduit.equals(name))
+                return produit;
+        }
+        return null;
     }
 }
