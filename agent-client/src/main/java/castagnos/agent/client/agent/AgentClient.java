@@ -57,11 +57,10 @@ public class AgentClient extends Agent {
         // Ajout dans le registre
         registerService(SELF);
 
-        System.out.println("L'agent : "+SELF+" est opérationnel.");
-
         // Ajout du behavior de reception de message
         addBehaviour(new ReceiveBehaviour(this));
 
+        System.out.println("L'agent "+SELF+" est opérationnel.");
         /*//Ouverture du client Main
         if(SELF.equals("MainClient")){
             VueClient.launchMain(this);
@@ -85,15 +84,11 @@ public class AgentClient extends Agent {
                     while (iter.hasNext()) {
                         sd = (ServiceDescription) iter.next();
                         if(!sd.getName().equals(SELF)){
-                            info += sd.getName()+" ";
+                            info += sd.getName()+"\n";
                             othersAgent.add(sd.getName());
                         }
                     }
                 }
-            }
-            if(!info.equals("")){
-                System.out.print(SELF+" a trouvé les agents "+type+" : ");
-                System.out.println(info);
             }
         } catch (FIPAException e) {
             e.printStackTrace();
@@ -119,7 +114,7 @@ public class AgentClient extends Agent {
     }
 
     public void sendProduit(Produit produit, String receiver, String type){
-        DFAgentDescription dfd = new DFAgentDescription();
+
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         try {
