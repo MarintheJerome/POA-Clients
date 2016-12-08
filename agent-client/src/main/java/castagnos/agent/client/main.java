@@ -1,6 +1,9 @@
 package castagnos.agent.client;
 
 import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.client.agent.MockSupermarket;
+import fr.miage.agents.api.message.recherche.Rechercher;
+import fr.miage.agents.api.message.relationclientsupermarche.Achat;
 import fr.miage.agents.api.model.Produit;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -22,6 +25,16 @@ public class main {
         AgentController sender;
         AgentController printer;
         try {
+        	MockSupermarket sm1 = new MockSupermarket();
+            sm1.SELF = "SuperU";
+            AgentController supermarket1 = cc.acceptNewAgent("SuperU", sm1);
+            supermarket1.start();
+            
+            MockSupermarket sm2 = new MockSupermarket();
+            sm2.SELF = "Auchan";
+            AgentController supermarket2 = cc.acceptNewAgent("Supermarket2", sm2);
+            supermarket2.start();
+        	
             Object valeurs[] = {"MainClient"};
             receiver = cc.createNewAgent("MainClient", "castagnos.agent.client.agent.AgentClient", valeurs);
             receiver.start();
@@ -35,7 +48,10 @@ public class main {
             ac.SELF = "ninja";
             AgentController ninja = cc.acceptNewAgent("Ninja", ac);
             ninja.start();
-            ac.sendProduit(new Produit(), "MainClient", "yolo");
+            
+            ac.sendRecherche(new Rechercher());
+            ac.sendAchat();
+            
         } catch (Exception e1) {
             e1.printStackTrace();
         }

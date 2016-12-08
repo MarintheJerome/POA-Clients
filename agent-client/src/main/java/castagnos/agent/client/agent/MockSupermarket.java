@@ -1,34 +1,24 @@
 package castagnos.agent.client.agent;
 
-import castagnos.agent.client.behaviour.ReceiveBehaviour;
-import fr.miage.agents.api.message.interClients.DemandeEchange;
-import fr.miage.agents.api.message.recherche.Rechercher;
-import fr.miage.agents.api.message.relationclientsupermarche.Achat;
-import fr.miage.agents.api.model.Produit;
+import java.io.IOException;
+import java.util.ArrayList;
 
+import castagnos.agent.client.behaviour.ReceiveBehaviour;
+import castagnos.agent.client.behaviour.ReceiveBehaviourSupermarket;
+import fr.miage.agents.api.message.interClients.DemandeEchange;
+import fr.miage.agents.api.model.Categorie;
+import fr.miage.agents.api.model.Produit;
 import jade.core.AID;
 import jade.core.Agent;
 import jade.domain.DFService;
+import jade.domain.FIPAException;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.UnreadableException;
 import jade.util.leap.Iterator;
 
-import java.io.IOException;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
-
-/**
- * Created by Yhugo on 01/12/2016.
- */
-public class AgentClient extends Agent {
-
-    /**
+public class MockSupermarket extends Agent {
+	/**
      * Autre clients dans le réseau d'agent
      */
     public ArrayList<String> others = new ArrayList<String>();
@@ -37,10 +27,8 @@ public class AgentClient extends Agent {
      * Supermarché que l'on peut voir sur le réseau d'agent
      */
     private ArrayList<String> markets = new ArrayList<String>();
-    private Map<String,Integer> marketsDistance = new HashMap<String,Integer>();
 
-    public ArrayList<Produit> panier = new ArrayList<Produit>();
-    
+    public ArrayList<Produit> stock = new ArrayList<Produit>();
 
     public int nResponders = -1;
 
@@ -57,6 +45,23 @@ public class AgentClient extends Agent {
     public String SELF = "";
 
     protected void setup() {
+    	Categorie cat = new Categorie();
+		cat.idCategorie = 1;
+		cat.nomCategorie = "Boisson";
+    	Produit p1 = new Produit();
+		p1.idProduit = 1;
+		p1.idCategorie = cat;
+		p1.marque = "CocaColaCompany";
+		p1.nomProduit = "Fanta";
+		p1.prixProduit = 2;
+		stock.add(p1);
+		Produit p2 = new Produit();
+		p2.idProduit = 2;
+		p2.idCategorie = cat;
+		p2.marque = "PepsiCo";
+		p2.nomProduit = "Orangina";
+		p2.prixProduit = 1;
+		stock.add(p2);
         Object[] args = getArguments();
         if(args != null){
             SELF = (String) args[0];
@@ -67,7 +72,7 @@ public class AgentClient extends Agent {
         System.out.println("L'agent : "+SELF+" est opérationnel.");
 
         // Ajout du behavior de reception de message
-        addBehaviour(new ReceiveBehaviour(this));
+        addBehaviour(new ReceiveBehaviourSupermarket(this));
 
         /*//Ouverture du client Main
         if(SELF.equals("MainClient")){
@@ -115,7 +120,7 @@ public class AgentClient extends Agent {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(this.getAID());
         ServiceDescription sd = new ServiceDescription();
-        sd.setType(TYPEC);
+        sd.setType(TYPEM);
         sd.setName(name);
         dfd.addServices(sd);
         try {
@@ -123,78 +128,5 @@ public class AgentClient extends Agent {
         } catch (FIPAException e) {
             e.printStackTrace();
         }
-    }
-
-    private void distance(){
-    	this.markets = this.getOthers(TYPEM);
-    	for(String s : markets){
-    		int dist = ThreadLocalRandom.current().nextInt(1, 21);
-    		this.marketsDistance.put(s, dist);
-    	}
-    }
-
-    public void sendProduit(Produit produit, String receiver, String type){
-    	
-        DFAgentDescription dfd = new DFAgentDescription();
-        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
-        try {
-            msg.setContentObject(new DemandeEchange(produit, 5));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.send(msg);
-    }
-    
-    private String plusProche(){
-    	this.distance();
-        String receiver = null;
-        Integer dist = null;
-        for(String s : this.markets){
-        	if(receiver == null){
-        		receiver = s;
-        	}
-        	else if(this.marketsDistance.get(s)<dist){
-        		receiver = s;
-        	}
-        	dist = this.marketsDistance.get(receiver);
-        }
-        return receiver;
-    }    
-    
-    public void sendRecherche(Rechercher recherche){
-        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        
-        msg.addReceiver(new AID(this.plusProche(), AID.ISLOCALNAME));
-        try {
-            msg.setContentObject(recherche);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.send(msg);
-    }
-    
-    public void sendAchat(){
-    	Map<Integer,Integer> listeAchat = new HashMap<Integer,Integer>();
-    	for(Produit p : this.panier){
-    		Integer  qte = listeAchat.remove(p.idProduit);
-    		if(qte == null){
-    			listeAchat.put((int)p.idProduit, 1);
-    		}
-    		else{
-    			listeAchat.put((int)p.idProduit, qte++);
-    		}
-    	}
-    	Achat achat = new Achat();
-    	achat.listeCourses = listeAchat;
-        DFAgentDescription dfd = new DFAgentDescription();
-        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
-        msg.addReceiver(new AID(this.plusProche(), AID.ISLOCALNAME));
-        try {
-            msg.setContentObject(achat);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.send(msg);
     }
 }
