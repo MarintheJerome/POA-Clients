@@ -63,13 +63,13 @@ public class AgentClient extends Agent {
         System.out.println("L'agent : "+SELF+" est opérationnel.");
 
 
-        if(SELF.equals("sender")){
+        /*if(SELF.equals("sender")){
             try {
                 sending("Hello my friends !", TYPEC);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
+        }*/
 
         //Ouverture du client Main
         if(SELF.equals("MainClient")){
@@ -167,7 +167,7 @@ public class AgentClient extends Agent {
         }
     }
 
-    public void sending(Serializable content, String type, String receiver) throws IOException {
+    public void sending(Serializable content, String receiver, String type) throws IOException {
         message = new ACLMessage(ACLMessage.CFP);
         message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         nResponders = 1;
