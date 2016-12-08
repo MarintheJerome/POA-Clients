@@ -113,11 +113,11 @@ public class AgentClient extends Agent {
         }
     }
 
-    public void sendProduit(Produit produit, String receiver, String type){
+    public void sendProduit(Produit produit, String receiver, int quantite, String type){
         ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
         msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
         try {
-            msg.setContentObject(new DemandeEchange(produit, 5));
+            msg.setContentObject(new DemandeEchange(produit, quantite));
         } catch (IOException e) {
             e.printStackTrace();
         }

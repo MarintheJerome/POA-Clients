@@ -180,7 +180,9 @@ public class main {
                     System.out.print("Quel produit demandé ? ");
                     String nomProduit = stringInput();
                     if(listeNomProduits.contains(nomProduit)){ // le produit existe
-                        getAgentFromName(agentEnvoyeur).sendProduit(getProductFromName(nomProduit), agentReceveur, "Client");
+                        System.out.print("Quantité voulue : ");
+                        int quantiteVoulue = intInput(1, 50);
+                        getAgentFromName(agentEnvoyeur).sendProduit(getProductFromName(nomProduit), agentReceveur, quantiteVoulue, "Client");
                     }
                     else{ // le produit existe pas
                         System.out.println("Le produit n'existe pas.");

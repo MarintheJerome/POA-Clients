@@ -33,10 +33,11 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                     switch(message.type){
                         // cas à traiter
                         case DemandeEchange:
-                            //DemandeEchange demandeEchange = (DemandeEchange) message;
+                            DemandeEchange demandeEchange = (DemandeEchange) message;
                             ACLMessage reply = aclMessage.createReply();
 
-                            System.out.println("L'agent " + myAgent.getLocalName()+" a reçu une demande d'échange de "+aclMessage.getSender().getLocalName());
+                            System.out.println("L'agent "+myAgent.getLocalName()+" a reçu une demande d'échange de "+aclMessage.getSender().getLocalName());
+                            System.out.println("L'agent "+myAgent.getLocalName()+" veut "+demandeEchange.quantiteDemande+" "+demandeEchange.produitDemande.nomProduit);
                             try {
                                 //Produit produit = demandeEchange.produitDemande;
                                 reply.setContentObject(new ReponseEchange(true, null, 12, 24));

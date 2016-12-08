@@ -79,7 +79,7 @@ public class NegociationController implements Initializable{
             Produit produit = new Produit();
             produit.nomProduit = listProduits.getSelectionModel().getSelectedItem();
             DemandeEchange demande = new DemandeEchange(produit, Integer.parseInt(quantiteNegociation.getText()));
-            agentClient.sendProduit(produit, "printer", AgentClient.TYPEC);
+            agentClient.sendProduit(produit, "printer", Integer.parseInt(quantiteNegociation.getText()), AgentClient.TYPEC);
         }
     }
 
