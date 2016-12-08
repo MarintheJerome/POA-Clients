@@ -52,7 +52,7 @@ public class VueClient extends Application{
 	@FXML
 	ComboBox listProduits, listClient;
 
-	private static AgentClient agent;
+	public static AgentClient agent;
 
 	private List<Produit> produitsCourrant = new ArrayList<Produit>();
 	
