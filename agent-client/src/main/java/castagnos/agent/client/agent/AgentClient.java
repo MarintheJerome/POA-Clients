@@ -1,10 +1,8 @@
 package castagnos.agent.client.agent;
 
-import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
-import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
-import fr.miage.agents.api.message.interClients.Demande;
+import castagnos.agent.client.behaviour.ReceiveBehaviour;
+import fr.miage.agents.api.message.interClients.DemandeEchange;
 import fr.miage.agents.api.model.Produit;
-import castagnos.agent.client.vue.VueClient;
 
 import jade.core.AID;
 import jade.core.Agent;
@@ -12,16 +10,12 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-import jade.domain.FIPANames;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
 import jade.util.leap.Iterator;
 
 import java.io.IOException;
-import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * Created by Yhugo on 01/12/2016.
@@ -55,38 +49,24 @@ public class AgentClient extends Agent {
     public String SELF = "";
 
     protected void setup() {
-        // Ajout dans le registre
+
         Object[] args = getArguments();
-        if (args == null) System.exit(-1);
-        if (args.length != 1) System.exit(-2);
-        SELF = (String) args[0];
+        if(args != null){
+            SELF = (String) args[0];
+        }
+        // Ajout dans le registre
         registerService(SELF);
+
         System.out.println("L'agent : "+SELF+" est opérationnel.");
 
+        // Ajout du behavior de reception de message
+        addBehaviour(new ReceiveBehaviour(this));
 
-        if(SELF.equals("sender")){
-            try {
-                sending(new Demande("Purée", 6), TYPEC);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // Ajouts des comportements de l'agent
-        addBehaviour(new ContractNetInitiatorBehavior(this, message));
-
-        MessageTemplate template = MessageTemplate.and(
-                MessageTemplate.MatchProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET),
-                MessageTemplate.MatchPerformative(ACLMessage.CFP) );
-
-        addBehaviour(new ContractNetResponderBehaviour(this, template));
-
-       /* //Ouverture du client Main
+        /*//Ouverture du client Main
         if(SELF.equals("MainClient")){
             VueClient.launchMain(this);
         }*/
     }
-
 
     /**
      * Méthode de retour des agents
@@ -138,38 +118,15 @@ public class AgentClient extends Agent {
         }
     }
 
-    /**
-     * Méthode d'envoie de message.
-     */
-
-    public void sending(Serializable content, String type) throws IOException {
-        // MAJ des agents détéctés.
-        others = getOthers(TYPEC);
-        markets = getOthers(TYPEM);
-        if(type.equals(TYPEC) || type.equals(TYPEM)){
-            message = new ACLMessage(ACLMessage.CFP);
-            ArrayList<String> used = null;
-            if(type.equals(TYPEC)) used = others;
-            if(type.equals(TYPEM)) used = markets;
-            for (int i = 0; i < used.size(); ++i) {
-                message.addReceiver(new AID(used.get(i), AID.ISLOCALNAME));
-            }
-            nResponders = used.size();
-            message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-            message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
-            message.setContentObject(content);
-        }else{
-            System.out.println("Agent "+getName()+" a tenté de lancer un message foireux.");
+    public void sendProduit(Produit produit, String receiver, String type){
+        DFAgentDescription dfd = new DFAgentDescription();
+        ACLMessage msg = new ACLMessage(ACLMessage.REQUEST);
+        msg.addReceiver(new AID(receiver, AID.ISLOCALNAME));
+        try {
+            msg.setContentObject(new DemandeEchange(produit, 5));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    public void sending(Serializable content, String receiver, String type) throws IOException {
-        message = new ACLMessage(ACLMessage.CFP);
-        message.addReceiver(new AID(receiver, AID.ISLOCALNAME));
-        nResponders = 1;
-        message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
-        message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
-        message.setContentObject(content);
-        send(message);
+        this.send(msg);
     }
 }

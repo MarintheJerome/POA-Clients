@@ -1,5 +1,7 @@
 package castagnos.agent.client;
 
+import castagnos.agent.client.agent.AgentClient;
+import fr.miage.agents.api.model.Produit;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentContainer;
@@ -29,6 +31,11 @@ public class main {
             Object valeurs3[] = {"printer"};
             printer = cc.createNewAgent("printer", "castagnos.agent.client.agent.AgentClient", valeurs3);
             printer.start();
+            AgentClient ac = new AgentClient();
+            ac.SELF = "ninja";
+            AgentController ninja = cc.acceptNewAgent("Ninja", ac);
+            ninja.start();
+            ac.sendProduit(new Produit(), "MainClient", "yolo");
         } catch (Exception e1) {
             e1.printStackTrace();
         }

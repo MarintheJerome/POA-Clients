@@ -2,7 +2,8 @@ package castagnos.agent.client.controller;
 
 import castagnos.agent.client.agent.AgentClient;
 import castagnos.agent.client.common.Popup;
-import fr.miage.agents.api.message.interClients.Demande;
+import fr.miage.agents.api.message.interClients.DemandeEchange;
+import fr.miage.agents.api.model.Produit;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -75,8 +76,10 @@ public class NegociationController implements Initializable{
     @FXML
     public void demander() throws IOException {
         if(!checkErrors()){
-            Demande demande = new Demande(listProduits.getSelectionModel().getSelectedItem(), Integer.parseInt(quantiteNegociation.getText()));
-            agentClient.sending(demande, listeClient.getSelectionModel().getSelectedItem(), AgentClient.TYPEC);
+            Produit produit = new Produit();
+            produit.nomProduit = listProduits.getSelectionModel().getSelectedItem();
+            DemandeEchange demande = new DemandeEchange(produit, Integer.parseInt(quantiteNegociation.getText()));
+            agentClient.sendProduit(produit, "printer", AgentClient.TYPEC);
         }
     }
 

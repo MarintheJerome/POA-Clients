@@ -1,4 +1,4 @@
-package castagnos.agent.client.behaviour;
+package castagnos.agent.client.FIPA.behaviourFIPA;
 
 import castagnos.agent.client.agent.AgentClient;
 import jade.core.AID;

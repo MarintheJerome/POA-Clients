@@ -1,4 +1,4 @@
-package castagnos.agent.client.agent;
+package castagnos.agent.client.FIPA.agentFIPA;
 
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;

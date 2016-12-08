@@ -83,11 +83,11 @@ public class VueClient extends Application{
 		if(!this.prixMin.getText().equals("")){
 			recherche.prixMin = Float.parseFloat(this.prixMin.getText());
 		}
-		try {
+	/*	try {
 			agent.sending(recherche, AgentClient.TYPEM);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 	}
 	
 	public void afficheResRecherche(List<Produit> list) throws IOException{
