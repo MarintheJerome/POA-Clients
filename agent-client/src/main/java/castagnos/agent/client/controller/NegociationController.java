@@ -56,7 +56,6 @@ public class NegociationController implements Initializable{
         // On force le textfield pour la quantité à contenir que des nombres
         quantiteNegociation.textProperty().addListener(new ChangeListener<String>() {
 
-            @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
             if (!newValue.matches("\\d*")) {
                 quantiteNegociation.setText(newValue.replaceAll("[^\\d]", ""));
@@ -77,7 +76,7 @@ public class NegociationController implements Initializable{
     public void demander() throws IOException {
         if(!checkErrors()){
             Demande demande = new Demande(listProduits.getSelectionModel().getSelectedItem(), Integer.parseInt(quantiteNegociation.getText()));
-            agentClient.sending(demande, listeClient.getSelectionModel().getSelectedItem());
+            agentClient.sending(demande, listeClient.getSelectionModel().getSelectedItem(), AgentClient.TYPEC);
         }
     }
 

@@ -84,7 +84,7 @@ public class VueClient extends Application{
 			recherche.prixMin = Float.parseFloat(this.prixMin.getText());
 		}
 		try {
-			this.agent.sending(recherche);
+			this.agent.sending(recherche, AgentClient.TYPEM);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -221,7 +221,7 @@ public class VueClient extends Application{
 	}
 
 	private String getNomClient(){
-		return agent.getAgentName();
+		return agent.SELF;
 	}
 
 	@Override
