@@ -2,12 +2,16 @@ package castagnos.agent.client.behaviour;
 import fr.miage.agents.api.message.Message;
 import fr.miage.agents.api.message.interClients.DemandeEchange;
 import fr.miage.agents.api.message.interClients.ReponseEchange;
+import fr.miage.agents.api.message.recherche.ResultatRecherche;
+import fr.miage.agents.api.message.relationclientsupermarche.ResultatAchat;
 import fr.miage.agents.api.model.Produit;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
+
+import castagnos.agent.client.agent.AgentClient;
 
 /**
 * Created by jerome on 13/11/2016.
@@ -50,6 +54,25 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                         case ReponseEchange:
                             System.out.println("L'agent "+myAgent.getLocalName()+" a récupéré la réponse de l'échange");
                             break;
+                        case ResultatRecherche:
+                        	ResultatRecherche res = (ResultatRecherche) message;
+                        	Produit addPanier = null;
+                        	for(Produit p : res.produitList){
+                        		if(addPanier == null){
+                        			addPanier = p;
+                        		}
+                        		else if(p.prixProduit<addPanier.prixProduit){
+                        			addPanier = p;
+                        		}
+                        	}
+                        	AgentClient agent = (AgentClient) myAgent;
+                        	agent.panier.add(addPanier);
+                        	System.out.println("L'agent "+myAgent.getLocalName()+" ajoute le produit "+ addPanier.idProduit);
+                        	break;
+                        case ResultatInitiationAchat:
+                        	ResultatAchat resAchat = (ResultatAchat) message;
+                        	System.out.println("L'agent "+myAgent.getLocalName()+" a finit ses achats et à acheté "+resAchat.courses.size() + " produits");
+                        	break;
                         default:
                             break;
                     }

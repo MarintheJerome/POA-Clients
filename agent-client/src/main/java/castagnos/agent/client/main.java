@@ -1,12 +1,9 @@
 package castagnos.agent.client;
 
 import castagnos.agent.client.agent.AgentClient;
-import fr.miage.agents.api.model.Categorie;
 import fr.miage.agents.api.model.Produit;
-import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
-import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
