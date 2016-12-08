@@ -2,6 +2,7 @@ package castagnos.agent.client.agent;
 
 import castagnos.agent.client.behaviour.ContractNetInitiatorBehavior;
 import castagnos.agent.client.behaviour.ContractNetResponderBehaviour;
+import fr.miage.agents.api.message.interClients.Demande;
 import fr.miage.agents.api.model.Produit;
 import castagnos.agent.client.vue.VueClient;
 
@@ -63,17 +64,12 @@ public class AgentClient extends Agent {
         System.out.println("L'agent : "+SELF+" est opérationnel.");
 
 
-        /*if(SELF.equals("sender")){
+        if(SELF.equals("sender")){
             try {
-                sending("Hello my friends !", TYPEC);
+                sending(new Demande("Purée", 6), TYPEC);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }*/
-
-        //Ouverture du client Main
-        if(SELF.equals("MainClient")){
-        //    VueClient.launchMain(this);
         }
 
         // Ajouts des comportements de l'agent
@@ -85,10 +81,10 @@ public class AgentClient extends Agent {
 
         addBehaviour(new ContractNetResponderBehaviour(this, template));
 
-        //Ouverture du client Main
+       /* //Ouverture du client Main
         if(SELF.equals("MainClient")){
             VueClient.launchMain(this);
-        }
+        }*/
     }
 
 
@@ -174,5 +170,6 @@ public class AgentClient extends Agent {
         message.setProtocol(FIPANames.InteractionProtocol.FIPA_CONTRACT_NET);
         message.setReplyByDate(new Date(System.currentTimeMillis() + 1000));
         message.setContentObject(content);
+        send(message);
     }
 }
