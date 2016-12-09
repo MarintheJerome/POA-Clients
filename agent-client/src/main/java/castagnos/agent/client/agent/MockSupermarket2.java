@@ -17,7 +17,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Iterator;
 
-public class MockSupermarket2 extends Agent {
+public class MockSupermarket2 extends Agent implements MockSupermarket{
 	/**
      * Autre clients dans le réseau d'agent
      */
@@ -44,7 +44,81 @@ public class MockSupermarket2 extends Agent {
     public final static String TYPEM = "Supermarché";
     public String SELF = "";
 
-    protected void setup() {
+    private void creerProduit(){
+    	this.creerBoisson();
+    	this.creerHighTech();
+    	this.creerLegume();
+    }
+    
+    private void creerBoisson(){
+    	Categorie cat = new Categorie();
+		cat.idCategorie = 1;
+		cat.nomCategorie = "Boisson";
+    	Produit p1 = new Produit();
+		p1.idProduit = 1;
+		p1.idCategorie = cat;
+		p1.marque = "CocaColaCompany";
+		p1.nomProduit = "Fanta";
+		p1.prixProduit = 2;
+		Produit p2 = new Produit();
+		p2.idProduit = 2;
+		p2.idCategorie = cat;
+		p2.marque = "PepsiCo";
+		p2.nomProduit = "Orangina";
+		p2.prixProduit = 1;
+		int i = 0;
+		while(i<10){
+			stock.add(p1);
+			stock.add(p2);
+		}
+    }
+    private void creerHighTech(){
+    	Categorie cat = new Categorie();
+		cat.idCategorie = 2;
+		cat.nomCategorie = "HighTech";
+    	Produit p1 = new Produit();
+		p1.idProduit = 3;
+		p1.idCategorie = cat;
+		p1.marque = "HP";
+		p1.nomProduit = "USB 8GB";
+		p1.prixProduit = 16;
+		Produit p2 = new Produit();
+		p2.idProduit = 4;
+		p2.idCategorie = cat;
+		p2.marque = "Asus";
+		p2.nomProduit = "ROG";
+		p2.prixProduit = 1200;
+		int i = 0;
+		while(i<10){
+			stock.add(p1);
+			stock.add(p2);
+		}
+    }
+    private void creerLegume(){
+    	Categorie cat = new Categorie();
+		cat.idCategorie = 3;
+		cat.nomCategorie = "Legume";
+    	Produit p1 = new Produit();
+		p1.idProduit = 5;
+		p1.idCategorie = cat;
+		p1.marque = "";
+		p1.nomProduit = "Pomme";
+		p1.prixProduit = 2;
+		Produit p2 = new Produit();
+		p2.idProduit = 6;
+		p2.idCategorie = cat;
+		p2.marque = "";
+		p2.nomProduit = "Carrote";
+		p2.prixProduit = 1;
+		int i = 0;
+		while(i<10){
+			stock.add(p1);
+			stock.add(p2);
+		}
+    }
+
+    public void setup() {
+    	this.creerProduit();
     	Categorie cat = new Categorie();
 		cat.idCategorie = 1;
 		cat.nomCategorie = "Boisson";
