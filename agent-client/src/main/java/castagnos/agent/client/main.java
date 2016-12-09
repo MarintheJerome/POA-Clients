@@ -1,7 +1,8 @@
 package castagnos.agent.client;
 
 import castagnos.agent.client.agent.AgentClient;
-import castagnos.agent.client.agent.MockSupermarket;
+import castagnos.agent.client.agent.MockSupermarket1;
+import castagnos.agent.client.agent.MockSupermarket2;
 import fr.miage.agents.api.model.Produit;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -33,12 +34,12 @@ public class main {
         
         AgentController supermarket1;
 		try {
-			MockSupermarket sm1 = new MockSupermarket();
+			MockSupermarket1 sm1 = new MockSupermarket1();
 	        sm1.SELF = "SuperU";
 			supermarket1 = cc.acceptNewAgent("SuperU", sm1);
 			supermarket1.start();
 	        
-	        MockSupermarket sm2 = new MockSupermarket();
+	        MockSupermarket2 sm2 = new MockSupermarket2();
 	        sm2.SELF = "Auchan";
 	        AgentController supermarket2 = cc.acceptNewAgent("Supermarket2", sm2);
 	        supermarket2.start();

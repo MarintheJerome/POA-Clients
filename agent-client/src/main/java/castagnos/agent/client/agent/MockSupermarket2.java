@@ -17,7 +17,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Iterator;
 
-public class MockSupermarket extends Agent {
+public class MockSupermarket2 extends Agent {
 	/**
      * Autre clients dans le réseau d'agent
      */
