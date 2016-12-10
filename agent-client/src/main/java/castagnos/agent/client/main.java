@@ -4,6 +4,7 @@ import castagnos.agent.client.agent.AgentClient;
 import castagnos.agent.client.agent.MockSupermarket;
 import castagnos.agent.client.agent.MockSupermarket1;
 import castagnos.agent.client.agent.MockSupermarket2;
+import fr.miage.agents.api.message.recherche.Rechercher;
 import fr.miage.agents.api.model.Produit;
 import jade.core.Agent;
 import jade.core.Profile;
@@ -14,6 +15,7 @@ import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
@@ -26,6 +28,7 @@ public class main {
     private static Scanner sc;
     private static ArrayList<AgentClient> listeAgents;
     private static ArrayList<MockSupermarket> listeSupermarche;
+    private static ArrayList<String> listeNomSupermarche;
     private static ArrayList<String> listeNomAgents;
     private static ArrayList<Produit> listeProduits;
     private static ArrayList<String> listeNomProduits;
@@ -37,18 +40,21 @@ public class main {
         p.setParameter(Profile.GUI, "true");
         ContainerController cc =runtime.createMainContainer(p);
         listeSupermarche = new ArrayList<MockSupermarket>();
+        listeNomSupermarche = new ArrayList<String>();
 		try {
 			AgentController supermarket1;
 			MockSupermarket1 sm1 = new MockSupermarket1();
 	        sm1.SELF = "SuperU";
 			supermarket1 = cc.acceptNewAgent("SuperU", sm1);
 			listeSupermarche.add(sm1);
+			listeNomSupermarche.add("SuperU");
 			supermarket1.start();
 	        
 	        MockSupermarket2 sm2 = new MockSupermarket2();
 	        sm2.SELF = "Auchan";
-	        AgentController supermarket2 = cc.acceptNewAgent("Supermarket2", sm2);
+	        AgentController supermarket2 = cc.acceptNewAgent("Auchan", sm2);
 	        listeSupermarche.add(sm2);
+	        listeNomSupermarche.add("Auchan");
 	        supermarket2.start();
 		} catch (StaleProxyException e1) {
 			e1.printStackTrace();
@@ -61,9 +67,9 @@ public class main {
         listeNomProduits = new ArrayList<String>();
 
         int reponseUtilisateur = 0;
-        while (reponseUtilisateur != 5){
+        while (reponseUtilisateur != 9){
             affichageOptions();
-            reponseUtilisateur = intInput(1, 5);
+            reponseUtilisateur = intInput(1, 9);
             switch(reponseUtilisateur){
                 case 1:
                     try {
@@ -82,6 +88,18 @@ public class main {
                     demandeEchange();
                     break;
                 case 5:
+                	ajoutProduit();
+                    break;
+                case 6:
+                	voirPanier();
+                    break;
+                case 7:
+                	passerCommande();
+                    break;
+                case 8:
+                	distanceSupermarche();
+                    break;
+                case 9:
                     System.exit(0);
             }
         }
@@ -97,8 +115,13 @@ public class main {
         System.out.println("2 - Voir les agents présents");
         System.out.println("3 - Voir la liste des produits");
         System.out.println("4 - Envoyer une demande d'échange");
-        System.out.println("5 - Quitter");
+        System.out.println("5 - Ajouter un produit au panier");
+        System.out.println("6 - Voir mon panier");
+        System.out.println("7 - Passer Commande");
+        System.out.println("8 - Distance avec les supermarchés");
+        System.out.println("9 - Quitter");
     }
+
 
     public static String stringInput(){
         sc = new Scanner(System.in);
@@ -216,6 +239,72 @@ public class main {
         }else{ // il y a pas d'agent
             System.out.println("Il faut au moins 2 agents pour un échange.");
         }
+    }
+    
+    public static void ajoutProduit(){
+    	
+    	System.out.print("Quelle est le produit que vous rechercher? (idProduit-nomCategorie-marque-prixMax-prixMin)");
+        String recherche = stringInput();
+        System.out.print("Quel agent recherche ce produit ? ");
+        String agentEnvoyeur = stringInput();
+        if(listeNomAgents.contains(agentEnvoyeur)){
+        	Rechercher rechercher = new Rechercher();
+        	String[] champsRecherche = recherche.split("-");
+        	if(!champsRecherche[0].equals(" ")){
+        		rechercher.idProduit = Long.parseLong(champsRecherche[0]);
+        	}
+        	if(!champsRecherche[1].equals(" ")){
+        		rechercher.nomCategorie = champsRecherche[1];
+        	}
+        	if(!champsRecherche[2].equals(" ")){
+        		rechercher.marque = champsRecherche[2];
+        	}
+        	if(!champsRecherche[3].equals(" ")){
+        		rechercher.prixMax = Float.parseFloat(champsRecherche[3]);
+        	}
+        	if(!champsRecherche[4].equals(" ")){
+        		rechercher.prixMin = Float.parseFloat(champsRecherche[4]);
+        	}
+        	getAgentFromName(agentEnvoyeur).sendRecherche(rechercher);
+        }
+        else{
+        	System.out.println("L'agent "+agentEnvoyeur+" n'existe pas");
+        }
+    }
+    
+    public static void voirPanier(){
+    	 System.out.print("Quel agent veux voir sont panier ? ");
+         String agentEnvoyeur = stringInput();
+         if(listeNomAgents.contains(agentEnvoyeur)){
+        	 ArrayList<Produit> panier = getAgentFromName(agentEnvoyeur).panier;
+        	 float prixTotal = 0;
+        	 for(Produit produit : panier){
+        		 System.out.println(produit.nomProduit+" - "+produit.prixProduit+" €");
+        		 prixTotal = prixTotal + produit.prixProduit;
+        	 }
+        	 System.out.println("Prix total du panier : "+ prixTotal + " €");
+         }
+         else{
+         	System.out.println("L'agent "+agentEnvoyeur+" n'existe pas");
+         }
+    }
+    
+    public static void distanceSupermarche(){
+    	 System.out.print("Quel agent veux savoir les distances des supermarchés ? ");
+         String agentEnvoyeur = stringInput();
+         if(listeNomAgents.contains(agentEnvoyeur)){
+        	 Map<String,Integer> markets = getAgentFromName(agentEnvoyeur).marketsDistance;
+        	 for(String s : listeNomSupermarche){
+        		 System.out.println("Le Supermarché "+s+" est à "+ markets.get(s) + " kms");
+        	 }
+         }
+         else{
+         	System.out.println("L'agent "+agentEnvoyeur+" n'existe pas");
+         }
+    }
+    
+    public static void passerCommande(){
+    	
     }
 
     private static AgentClient getAgentFromName(String name){

@@ -37,7 +37,7 @@ public class AgentClient extends Agent {
      * Supermarché que l'on peut voir sur le réseau d'agent
      */
     private ArrayList<String> markets = new ArrayList<String>();
-    private Map<String,Integer> marketsDistance = new HashMap<String,Integer>();
+    public Map<String,Integer> marketsDistance = new HashMap<String,Integer>();
 
     public ArrayList<Produit> panier = new ArrayList<Produit>();
     
@@ -57,6 +57,7 @@ public class AgentClient extends Agent {
     public String SELF = "";
 
     protected void setup() {
+    	this.distance();
         Object[] args = getArguments();
         if(args != null){
             SELF = (String) args[0];
@@ -141,7 +142,6 @@ public class AgentClient extends Agent {
     }
     
     private String plusProche(){
-    	this.distance();
         String receiver = null;
         Integer dist = null;
         for(String s : this.markets){

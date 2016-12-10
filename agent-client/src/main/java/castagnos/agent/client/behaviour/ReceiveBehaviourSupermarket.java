@@ -41,23 +41,12 @@ public class ReceiveBehaviourSupermarket  extends CyclicBehaviour {
                     		Rechercher recherche = (Rechercher) message;
                     		ResultatRecherche resRecherche = new ResultatRecherche();
                     		ArrayList<Produit> listProduit = new ArrayList<Produit>();
-                    		Categorie cat = new Categorie();
-                    		cat.idCategorie = 1;
-                    		cat.nomCategorie = "Boisson";
-                    		Produit p1 = new Produit();
-                    		p1.idProduit = 1;
-                    		p1.idCategorie = cat;
-                    		p1.marque = "CocaColaCompany";
-                    		p1.nomProduit = "CocaCola";
-                    		p1.prixProduit = 2;
-                    		listProduit.add(p1);
-                    		Produit p2 = new Produit();
-                    		p2.idProduit = 2;
-                    		p2.idCategorie = cat;
-                    		p2.marque = "PepsiCo";
-                    		p2.nomProduit = "Pepsi";
-                    		p2.prixProduit = 1;
-                    		listProduit.add(p2);
+                    		MockSupermarket supermarche = (MockSupermarket) myAgent;
+                    		for(Produit p : supermarche.stock){
+                    			if(p.idCategorie.nomCategorie.equals(recherche.nomCategorie)){
+                    				listProduit.add(p);
+                    			}
+                    		}
                     		resRecherche.produitList = listProduit;
                     		reply.setContentObject(resRecherche);
                     		break;
