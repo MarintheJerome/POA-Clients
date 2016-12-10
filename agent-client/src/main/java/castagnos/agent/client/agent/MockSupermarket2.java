@@ -17,7 +17,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.lang.acl.ACLMessage;
 import jade.util.leap.Iterator;
 
-public class MockSupermarket2 extends Agent implements MockSupermarket{
+public class MockSupermarket2 extends MockSupermarket{
 	/**
      * Autre clients dans le réseau d'agent
      */
@@ -27,8 +27,6 @@ public class MockSupermarket2 extends Agent implements MockSupermarket{
      * Supermarché que l'on peut voir sur le réseau d'agent
      */
     private ArrayList<String> markets = new ArrayList<String>();
-
-    public ArrayList<Produit> stock = new ArrayList<Produit>();
 
     public int nResponders = -1;
 
@@ -70,6 +68,7 @@ public class MockSupermarket2 extends Agent implements MockSupermarket{
 		while(i<10){
 			stock.add(p1);
 			stock.add(p2);
+			i++;
 		}
     }
     private void creerHighTech(){
@@ -92,6 +91,7 @@ public class MockSupermarket2 extends Agent implements MockSupermarket{
 		while(i<10){
 			stock.add(p1);
 			stock.add(p2);
+			i++;
 		}
     }
     private void creerLegume(){
@@ -114,28 +114,12 @@ public class MockSupermarket2 extends Agent implements MockSupermarket{
 		while(i<10){
 			stock.add(p1);
 			stock.add(p2);
+			i++;
 		}
     }
 
-    public void setup() {
+    protected void setup() {
     	this.creerProduit();
-    	Categorie cat = new Categorie();
-		cat.idCategorie = 1;
-		cat.nomCategorie = "Boisson";
-    	Produit p1 = new Produit();
-		p1.idProduit = 1;
-		p1.idCategorie = cat;
-		p1.marque = "CocaColaCompany";
-		p1.nomProduit = "Fanta";
-		p1.prixProduit = 2;
-		stock.add(p1);
-		Produit p2 = new Produit();
-		p2.idProduit = 2;
-		p2.idCategorie = cat;
-		p2.marque = "PepsiCo";
-		p2.nomProduit = "Orangina";
-		p2.prixProduit = 1;
-		stock.add(p2);
         Object[] args = getArguments();
         if(args != null){
             SELF = (String) args[0];

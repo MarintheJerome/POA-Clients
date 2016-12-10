@@ -2,13 +2,15 @@ package castagnos.agent.client.agent;
 
 import java.util.ArrayList;
 import fr.miage.agents.api.model.Produit;
+import jade.core.Agent;
 
-public interface MockSupermarket{
-    public ArrayList<String> others = new ArrayList<String>();
+public abstract class MockSupermarket extends Agent{
 
     public ArrayList<Produit> stock = new ArrayList<Produit>();
 
-    void setup();
+    protected void setup(){}
 
-    public ArrayList<String> getOthers(String type);
+    public ArrayList<String> getOthers(String type){
+    	return null;
+    }
 }

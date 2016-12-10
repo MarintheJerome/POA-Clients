@@ -1,6 +1,7 @@
 package castagnos.agent.client;
 
 import castagnos.agent.client.agent.AgentClient;
+import castagnos.agent.client.agent.MockSupermarket;
 import castagnos.agent.client.agent.MockSupermarket1;
 import castagnos.agent.client.agent.MockSupermarket2;
 import fr.miage.agents.api.model.Produit;
@@ -11,7 +12,10 @@ import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * Created by jerome on 14/11/2016.
@@ -20,6 +24,7 @@ public class main {
 
     private static Scanner sc;
     private static ArrayList<AgentClient> listeAgents;
+    private static ArrayList<MockSupermarket> listeSupermarche;
     private static ArrayList<String> listeNomAgents;
     private static ArrayList<Produit> listeProduits;
     private static ArrayList<String> listeNomProduits;
@@ -30,18 +35,19 @@ public class main {
         p.setParameter(Profile.MAIN_HOST, "localhost");
         p.setParameter(Profile.GUI, "true");
         ContainerController cc =runtime.createMainContainer(p);
-
-        
-        AgentController supermarket1;
+        listeSupermarche = new ArrayList<MockSupermarket>();
 		try {
+			AgentController supermarket1;
 			MockSupermarket1 sm1 = new MockSupermarket1();
 	        sm1.SELF = "SuperU";
 			supermarket1 = cc.acceptNewAgent("SuperU", sm1);
+			listeSupermarche.add(sm1);
 			supermarket1.start();
 	        
 	        MockSupermarket2 sm2 = new MockSupermarket2();
 	        sm2.SELF = "Auchan";
 	        AgentController supermarket2 = cc.acceptNewAgent("Supermarket2", sm2);
+	        listeSupermarche.add(sm2);
 	        supermarket2.start();
 		} catch (StaleProxyException e1) {
 			e1.printStackTrace();
@@ -52,8 +58,6 @@ public class main {
         listeNomAgents = new ArrayList<String>();
         listeProduits = new ArrayList<Produit>();
         listeNomProduits = new ArrayList<String>();
-
-        remplirListeProduits();
 
         int reponseUtilisateur = 0;
         while (reponseUtilisateur != 5){
@@ -80,30 +84,6 @@ public class main {
                     System.exit(0);
             }
         }
-    }
-
-    private static void remplirListeProduits() {
-        listeProduits.add(creerProduit("Purée", "La meilleure purée sur le marché ! ", 12));
-        listeProduits.add(creerProduit("Compote", "Les fruits c'est bon ! ", 8));
-        listeProduits.add(creerProduit("Café", "trop bon ", 4));
-        listeProduits.add(creerProduit("Champignon", "De paris", 3));
-        listeProduits.add(creerProduit("Pomme", "Golden", 2));
-        listeProduits.add(creerProduit("Carotte", "pourries", 5));
-
-        listeNomProduits.add("Purée");
-        listeNomProduits.add("Compote");
-        listeNomProduits.add("Café");
-        listeNomProduits.add("Champignon");
-        listeNomProduits.add("Pomme");
-        listeNomProduits.add("Carotte");
-    }
-
-    private static Produit creerProduit(String nomProduit, String descriptionProduit, float prixProduit){
-        Produit produit = new Produit();
-        produit.nomProduit = nomProduit;
-        produit.descriptionProduit = descriptionProduit;
-        produit.prixProduit = prixProduit;
-        return produit;
     }
 
     private static void affichageOptions(){
@@ -180,9 +160,15 @@ public class main {
     }
 
     private static void affichageProduits() {
-        for(Produit produit : listeProduits){
-            System.out.println(produit.nomProduit+" - "+produit.prixProduit+" €");
-        }
+    	Set<Produit> set = new HashSet<Produit>();
+    	for(MockSupermarket mock : listeSupermarche){
+    		for(Produit produit : mock.stock){
+    			set.add(produit);
+    		}
+    	}
+    	for(Produit produit : set){
+    		System.out.println(produit.nomProduit+" - "+produit.prixProduit+" €");
+    	}
     }
 
     private static void demandeEchange() {
