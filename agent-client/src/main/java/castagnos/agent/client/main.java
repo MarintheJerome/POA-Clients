@@ -304,7 +304,14 @@ public class main {
     }
     
     public static void passerCommande(){
-    	
+    	System.out.print("Quel agent veux passer sa commande ? ");
+        String agentEnvoyeur = stringInput();
+        if(listeNomAgents.contains(agentEnvoyeur)){
+        	getAgentFromName(agentEnvoyeur).sendAchat();
+        }
+        else{
+        	System.out.println("L'agent "+agentEnvoyeur+" n'existe pas");
+        }
     }
 
     private static AgentClient getAgentFromName(String name){
