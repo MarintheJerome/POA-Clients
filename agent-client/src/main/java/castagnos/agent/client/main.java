@@ -5,6 +5,7 @@ import castagnos.agent.client.agent.MockSupermarket;
 import castagnos.agent.client.agent.MockSupermarket1;
 import castagnos.agent.client.agent.MockSupermarket2;
 import fr.miage.agents.api.model.Produit;
+import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
@@ -138,14 +139,30 @@ public class main {
     }
 
     private static boolean existeAgent(int nombre){
-        return listeAgents.size() > nombre;
+        return listeAgents.size()+listeSupermarche.size() > nombre;
     }
 
     private static void affichageAgents() {
         if(existeAgent(0)) {
             System.out.print("Type de l'agent (Client ou Supermarché) : ");
             String type = stringInput();
-            ArrayList<String> agents = listeAgents.get(0).getOthers(type);
+            ArrayList<String> agents = null;
+            if(type.equals("Supermarché")){
+            	if(listeAgents.size()>0){
+                	agents = listeAgents.get(0).getOthers(type);
+                }
+                else if(listeSupermarche.size()>0){
+                	agents = listeSupermarche.get(0).getOthers(type);
+                }
+            }
+            else{
+            	if(listeSupermarche.size()>0){
+                	agents = listeSupermarche.get(0).getOthers(type);
+                }
+                else if(listeAgents.size()>0){
+                	agents = listeAgents.get(0).getOthers(type);
+                }
+            }
             for(String agent : agents){
                 System.out.println(agent);
             }
