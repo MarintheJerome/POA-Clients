@@ -44,13 +44,27 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                             System.out.println("L'agent "+myAgent.getLocalName()+" a reçu une demande d'échange de "+aclMessage.getSender().getLocalName());
                             System.out.println("L'agent "+myAgent.getLocalName()+" veut "+demandeEchange.quantiteDemande+" "+demandeEchange.produitDemande.nomProduit);
                             try {
-                                Produit produit = demandeEchange.produitDemande;
-                                HashMap<Produit, Integer> map = new HashMap<Produit, Integer>();
-                                map.put(produit, demandeEchange.quantiteDemande);
+                                Produit produit = demandeEchange.produitDemande;;
                                 double prix = produit.prixProduit * demandeEchange.quantiteDemande;
 
-                                ((AgentClient) myAgent).panier.add(demandeEchange.produitDemande);
-                                reply.setContentObject(new ReponseEchange(true, map, demandeEchange.quantiteDemande, prix));
+                                double yolo = Math.random();
+                                if(yolo > 0.5){
+                                    for(int i =0;i<demandeEchange.quantiteDemande;i++){
+                                        ((AgentClient) myAgent).panier.add(demandeEchange.produitDemande);
+                                    }
+                                    System.out.println("L'agent "+myAgent.getLocalName()+" accepte l'échange");
+                                    reply.setContentObject(new ReponseEchange(true, produit, prix, null, 0));
+                                }
+                                else{
+                                    System.out.println("L'agent "+myAgent.getLocalName()+" veut une compensation. Il veut une carotte");
+                                    Produit compensation = new Produit();
+                                    compensation.nomProduit = "Carotte";
+                                    compensation.prixProduit = 1;
+                                    for(int i =0;i<demandeEchange.quantiteDemande;i++){
+                                        ((AgentClient) myAgent).panier.add(demandeEchange.produitDemande);
+                                    }
+                                    reply.setContentObject(new ReponseEchange(true, produit, prix, compensation, 1  ));
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -58,7 +72,13 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                             break;
                         // à traiter
                         case ReponseEchange:
-                            System.out.println("L'agent "+myAgent.getLocalName()+" a récupéré la réponse de l'échange et est très content ! :)");
+                            ReponseEchange reponseEchange = (ReponseEchange) message;
+                            if(reponseEchange.compensation == null) {
+                                System.out.println("L'agent " + myAgent.getLocalName() + " a récupéré la réponse de l'échange et est très content ! :)");
+                            }else{
+                                System.out.println("L'agent" + myAgent.getLocalName() + " accepte la compensation. L'échange a donc eu lieu");
+                                ((AgentClient) myAgent).panier.add(reponseEchange.compensation);
+                            }
                             break;
                         case ResultatRecherche:
                         	ResultatRecherche res = (ResultatRecherche) message;

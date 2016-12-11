@@ -169,14 +169,14 @@ public class AgentClient extends Agent {
     }
     
     public void sendAchat(){
-    	Map<Integer,Integer> listeAchat = new HashMap<Integer,Integer>();
+    	Map<Long,Integer> listeAchat = new HashMap<Long,Integer>();
     	for(Produit p : this.panier){
     		Integer  qte = listeAchat.remove(p.idProduit);
     		if(qte == null){
-    			listeAchat.put((int)p.idProduit, 1);
+    			listeAchat.put(p.idProduit, 1);
     		}
     		else{
-    			listeAchat.put((int)p.idProduit, qte++);
+    			listeAchat.put(p.idProduit, qte++);
     		}
     	}
     	Achat achat = new Achat();
