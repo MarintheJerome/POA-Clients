@@ -97,7 +97,8 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                         case ResultatAchatClient:
                         	ResultatAchat resAchat = (ResultatAchat) message;
                         	System.out.println("L'agent "+myAgent.getLocalName()+" a finit ses achats et à acheté "+resAchat.courses.size() + " produits");
-                        	break;
+                            ((AgentClient) myAgent).panier.clear();
+                            break;
                         default:
                             break;
                     }
