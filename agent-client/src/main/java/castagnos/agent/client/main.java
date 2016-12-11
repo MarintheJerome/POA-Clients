@@ -59,12 +59,37 @@ public class main {
 		} catch (StaleProxyException e1) {
 			e1.printStackTrace();
 		}
-        
-        
+
         listeAgents = new ArrayList<AgentClient>();
         listeNomAgents = new ArrayList<String>();
         listeProduits = new ArrayList<Produit>();
         listeNomProduits = new ArrayList<String>();
+
+        listeNomProduits.add("CocaCola");
+        listeNomProduits.add("USB 8GB");
+        listeNomProduits.add("Fraise");
+        listeNomProduits.add("Pomme");
+        listeNomProduits.add("ROG");
+        listeNomProduits.add("Orangina");
+        listeNomProduits.add("Carrote");
+        listeNomProduits.add("Fanta");
+        listeNomProduits.add("XPSER15447");
+        listeNomProduits.add("USB 16GB");
+        listeNomProduits.add("Pepsi");
+        listeNomProduits.add("Navet");
+
+        listeProduits.add(creerProduit("Navet", 2));
+        listeProduits.add(creerProduit("Pepsi", 1));
+        listeProduits.add(creerProduit("XPSER15447", 780));
+        listeProduits.add(creerProduit("CocaCola", 2));
+        listeProduits.add(creerProduit("ROG", 1200));
+        listeProduits.add(creerProduit("Carrote", 1));
+        listeProduits.add(creerProduit("USB 16GB", 20));
+        listeProduits.add(creerProduit("Pomme", 2));
+        listeProduits.add(creerProduit("Orangina", 1));
+        listeProduits.add(creerProduit("Fanta", 2));
+        listeProduits.add(creerProduit("Fraise", 1));
+        listeProduits.add(creerProduit("USB 8GB", 16));
 
         int reponseUtilisateur = 0;
         while (reponseUtilisateur != 9){
@@ -103,6 +128,13 @@ public class main {
                     System.exit(0);
             }
         }
+    }
+
+    private static Produit creerProduit(String nom, float prix){
+        Produit produit = new Produit();
+        produit.nomProduit = nom;
+        produit.prixProduit = prix;
+        return produit;
     }
 
     private static void affichageOptions(){

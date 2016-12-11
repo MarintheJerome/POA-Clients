@@ -52,12 +52,10 @@ public class ReceiveBehaviourSupermarket  extends CyclicBehaviour {
                     		break;
                     	case InitierAchat:
                     		Achat achat = (Achat) message;
-                    		Map<Integer,Integer> liste = achat.listeCourses;
+                    		Map<Long,Integer> liste = achat.listeCourses;
                     		MockSupermarket agent = (MockSupermarket) myAgent;
-                    		Map<Boolean,Integer> realProduit = new HashMap<Boolean,Integer>();
-                    		realProduit.put(true,1);
-                    		Map<Produit,Map<Boolean,Integer>> realAchat = new HashMap<Produit,Map<Boolean,Integer>>();
-                    		realAchat.put(agent.stock.get(1), realProduit);
+                    		Map<Produit, Integer> realAchat = new HashMap<Produit, Integer>();
+                    		realAchat.put(agent.stock.get(1), 1);
                     		ResultatAchat resAchat = new ResultatAchat();                    		
                     		resAchat.courses = realAchat;
                     		reply.setContentObject(resAchat);
