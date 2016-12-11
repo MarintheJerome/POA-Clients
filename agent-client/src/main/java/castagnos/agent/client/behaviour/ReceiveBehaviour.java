@@ -33,7 +33,6 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                 try {
                     // On chope le message qui a été envoyé
                     Message message = ((Message)aclMessage.getContentObject());
-
                     // On switch sur ce type et on fait un traitement différent pour chaque
                     switch(message.type){
                         // cas à traiter
@@ -95,7 +94,7 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                         	agent.panier.add(addPanier);
                         	System.out.println("L'agent "+myAgent.getLocalName()+" ajoute le produit "+ addPanier.idProduit);
                         	break;
-                        case ResultatInitiationAchat:
+                        case ResultatAchatClient:
                         	ResultatAchat resAchat = (ResultatAchat) message;
                         	System.out.println("L'agent "+myAgent.getLocalName()+" a finit ses achats et à acheté "+resAchat.courses.size() + " produits");
                         	break;

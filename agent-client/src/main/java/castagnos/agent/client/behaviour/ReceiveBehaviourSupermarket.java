@@ -50,7 +50,7 @@ public class ReceiveBehaviourSupermarket  extends CyclicBehaviour {
                     		resRecherche.produitList = listProduit;
                     		reply.setContentObject(resRecherche);
                     		break;
-                    	case InitierAchat:
+                    	case AchatClient:
                     		Achat achat = (Achat) message;
                     		Map<Long,Integer> liste = achat.listeCourses;
                     		MockSupermarket agent = (MockSupermarket) myAgent;
