@@ -215,6 +215,7 @@ public class main {
     			set.add(produit);
     		}
     	}
+    	listeProduits.addAll(set);
     	for(Produit produit : set){
     		System.out.println(produit.nomProduit+" - "+produit.prixProduit+" €");
     	}
