@@ -10,6 +10,7 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import castagnos.agent.client.agent.AgentClient;
 
@@ -43,8 +44,13 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                             System.out.println("L'agent "+myAgent.getLocalName()+" a reçu une demande d'échange de "+aclMessage.getSender().getLocalName());
                             System.out.println("L'agent "+myAgent.getLocalName()+" veut "+demandeEchange.quantiteDemande+" "+demandeEchange.produitDemande.nomProduit);
                             try {
-                                //Produit produit = demandeEchange.produitDemande;
-                                reply.setContentObject(new ReponseEchange(true, null, 12, 24));
+                                Produit produit = demandeEchange.produitDemande;
+                                HashMap<Produit, Integer> map = new HashMap<Produit, Integer>();
+                                map.put(produit, demandeEchange.quantiteDemande);
+                                double prix = produit.prixProduit * demandeEchange.quantiteDemande;
+
+                                ((AgentClient) myAgent).panier.add(demandeEchange.produitDemande);
+                                reply.setContentObject(new ReponseEchange(true, map, demandeEchange.quantiteDemande, prix));
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -52,7 +58,7 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                             break;
                         // à traiter
                         case ReponseEchange:
-                            System.out.println("L'agent "+myAgent.getLocalName()+" a récupéré la réponse de l'échange");
+                            System.out.println("L'agent "+myAgent.getLocalName()+" a récupéré la réponse de l'échange et est très content ! :)");
                             break;
                         case ResultatRecherche:
                         	ResultatRecherche res = (ResultatRecherche) message;
