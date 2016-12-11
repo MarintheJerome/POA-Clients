@@ -190,8 +190,17 @@ public class main {
                 System.out.println(agent);
             }
             // On affiche quand même l'agent qui nous sert à faire l'appel
-            if(type.equals("Client")) {
+            if(type.equals("Client") && listeSupermarche.size()==0) {
                 System.out.println(listeAgents.get(0).SELF);
+            }
+            else if(type.equals("Client") && listeAgents.size()==0){
+            	System.out.println("Pas d'agent Client présent.");
+            }
+            else if(type.equals("Supermarché") && listeSupermarche.size()==0){
+            	System.out.println("Pas d'agent Supermarché présent.");
+            }
+            else if(type.equals("Supermarché") && listeAgents.size()==0){
+            	System.out.println(listeSupermarche.get(0).SELF);
             }
         }
         else{
@@ -250,19 +259,19 @@ public class main {
         if(listeNomAgents.contains(agentEnvoyeur)){
         	Rechercher rechercher = new Rechercher();
         	String[] champsRecherche = recherche.split("-");
-        	if(!champsRecherche[0].equals(" ")){
+        	if(!champsRecherche[0].equals(" ") && !champsRecherche[0].equals("")){
         		rechercher.idProduit = Long.parseLong(champsRecherche[0]);
         	}
-        	if(!champsRecherche[1].equals(" ")){
+        	if(!champsRecherche[1].equals(" ") && !champsRecherche[1].equals("")){
         		rechercher.nomCategorie = champsRecherche[1];
         	}
-        	if(!champsRecherche[2].equals(" ")){
+        	if(!champsRecherche[2].equals(" ") && !champsRecherche[2].equals("")){
         		rechercher.marque = champsRecherche[2];
         	}
-        	if(!champsRecherche[3].equals(" ")){
+        	if(!champsRecherche[3].equals(" ") && !champsRecherche[3].equals("")){
         		rechercher.prixMax = Float.parseFloat(champsRecherche[3]);
         	}
-        	if(!champsRecherche[4].equals(" ")){
+        	if(!champsRecherche[4].equals(" ") && !champsRecherche[4].equals("")){
         		rechercher.prixMin = Float.parseFloat(champsRecherche[4]);
         	}
         	getAgentFromName(agentEnvoyeur).sendRecherche(rechercher);

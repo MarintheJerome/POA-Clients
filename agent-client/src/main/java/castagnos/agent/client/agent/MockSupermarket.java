@@ -7,6 +7,8 @@ import jade.core.Agent;
 public abstract class MockSupermarket extends Agent{
 
     public ArrayList<Produit> stock = new ArrayList<Produit>();
+    
+    public String SELF = "";
 
     protected void setup(){}
 

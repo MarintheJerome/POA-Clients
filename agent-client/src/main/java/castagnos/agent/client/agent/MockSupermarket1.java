@@ -40,7 +40,6 @@ public class MockSupermarket1 extends MockSupermarket{
      */
     public final static String TYPEC = "Client";
     public final static String TYPEM = "Supermarché";
-    public String SELF = "";
 
     private void creerProduit(){
     	this.creerBoisson();
@@ -160,10 +159,6 @@ public class MockSupermarket1 extends MockSupermarket{
                         }
                     }
                 }
-            }
-            if(!info.equals("")){
-                System.out.print(SELF+" a trouvé les agents "+type+" : ");
-                System.out.println(info);
             }
         } catch (FIPAException e) {
             e.printStackTrace();
