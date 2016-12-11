@@ -216,7 +216,7 @@ public class main {
     		}
     	}
     	listeProduits.addAll(set);
-    	for(Produit produit : set){
+    	for(Produit produit : listeProduits){
     		System.out.println(produit.nomProduit+" - "+produit.prixProduit+" €");
     	}
     }
