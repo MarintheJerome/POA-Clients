@@ -46,8 +46,8 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                                 Produit produit = demandeEchange.produitDemande;;
                                 double prix = produit.prixProduit * demandeEchange.quantiteDemande;
 
-                                double yolo = Math.random();
-                                if(yolo > 0.5){
+                                double random = Math.random();
+                                if(random > 0.5){
                                     for(int i =0;i<demandeEchange.quantiteDemande;i++){
                                         ((AgentClient) myAgent).panier.add(demandeEchange.produitDemande);
                                     }
@@ -109,7 +109,7 @@ public class ReceiveBehaviour extends CyclicBehaviour {
                 this.block();
             }
             try {
-                // On dort 1s pour pas que ça nique le cpu
+                // On dort 1s pour pas utiliser trop de CPU
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();

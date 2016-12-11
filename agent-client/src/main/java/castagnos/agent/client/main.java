@@ -148,7 +148,7 @@ public class main {
         System.out.println("3 - Voir la liste des produits");
         System.out.println("4 - Envoyer une demande d'échange");
         System.out.println("5 - Ajouter un produit au panier");
-        System.out.println("6 - Voir mon panier");
+        System.out.println("6 - Voir panier");
         System.out.println("7 - Passer Commande");
         System.out.println("8 - Distance avec les supermarchés");
         System.out.println("9 - Quitter");
@@ -315,7 +315,7 @@ public class main {
     }
     
     public static void voirPanier(){
-    	 System.out.print("Quel agent veux voir sont panier ? ");
+    	 System.out.print("Quel agent veux voir son panier ? ");
          String agentEnvoyeur = stringInput();
          if(listeNomAgents.contains(agentEnvoyeur)){
         	 ArrayList<Produit> panier = getAgentFromName(agentEnvoyeur).panier;
